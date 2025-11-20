@@ -21,7 +21,7 @@ export default function PublicLayout({
                   <Wrench className="h-6 w-6 text-white" />
                 </div>
                 <div>
-                  <div className="text-xl font-bold">Tompo's Auto</div>
+                  <div className="text-xl font-bold">Tompo&apos;s Auto</div>
                   <div className="text-xs text-gray-400 leading-tight">
                     Where quality<br />Meets Experience 🚘
                   </div>
@@ -106,7 +106,7 @@ export default function PublicLayout({
           <div className="border-t border-gray-700 mt-8 pt-6 sm:mt-10 sm:pt-8">
             <div className="flex flex-col sm:flex-row justify-between items-center text-sm text-gray-400">
               <p className="mb-2 sm:mb-0">
-                © {new Date().getFullYear()} Tompo's Auto Spare Parts. All rights reserved.
+                © {new Date().getFullYear()} Tompo&apos;s Auto Spare Parts. All rights reserved.
               </p>
               <div className="flex space-x-4">
                 <a href="#" className="hover:text-white transition-colors">Privacy Policy</a>

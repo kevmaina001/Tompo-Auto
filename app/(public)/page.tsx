@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
-import { ShoppingCart, Search, CheckCircle, Clock, Shield, TrendingUp, ArrowRight, Star, Wrench, Phone, Mail } from "lucide-react";
+import { ShoppingCart, Search, CheckCircle, Clock, Shield, TrendingUp, ArrowRight, Star } from "lucide-react";
 import { useCart } from "@/lib/cart-context";
 
 export default function HomePage() {

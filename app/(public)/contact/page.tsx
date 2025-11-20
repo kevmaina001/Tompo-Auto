@@ -79,7 +79,7 @@ export default function ContactPage() {
               Get in Touch
             </h1>
             <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-blue-100 leading-relaxed">
-              Have questions? We're here to help you find the right parts for your vehicle
+              Have questions? We&apos;re here to help you find the right parts for your vehicle
             </p>
           </div>
         </div>
@@ -195,7 +195,7 @@ export default function ContactPage() {
                     <div>
                       <p className="text-sm sm:text-base text-green-800 font-semibold">Message sent successfully!</p>
                       <p className="text-xs sm:text-sm text-green-700 mt-1">
-                        We'll get back to you as soon as possible.
+                        We&apos;ll get back to you as soon as possible.
                       </p>
                     </div>
                   </div>

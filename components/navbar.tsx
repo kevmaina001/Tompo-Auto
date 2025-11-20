@@ -43,7 +43,7 @@ export function Navbar() {
                 </div>
                 <div>
                   <div className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent">
-                    Tompo's Auto
+                    Tompo&apos;s Auto
                   </div>
                   <div className="text-xs text-gray-500 leading-tight">
                     Where quality<br />Meets Experience 🚘
