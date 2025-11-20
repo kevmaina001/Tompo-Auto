@@ -50,20 +50,38 @@ export function Navbar() {
               </Link>
             </div>
 
-            <div className="flex items-center space-x-6">
-              <Link href="/">
+            <div className="flex items-center space-x-2 sm:space-x-4 lg:space-x-6">
+              <Link href="/" className="hidden sm:block">
                 <Button variant="ghost" className="text-gray-700 hover:text-blue-600">
                   Home
+                </Button>
+              </Link>
+
+              <Link href="/about" className="hidden md:block">
+                <Button variant="ghost" className="text-gray-700 hover:text-blue-600">
+                  About
+                </Button>
+              </Link>
+
+              <Link href="/blog" className="hidden md:block">
+                <Button variant="ghost" className="text-gray-700 hover:text-blue-600">
+                  Blog
+                </Button>
+              </Link>
+
+              <Link href="/contact" className="hidden md:block">
+                <Button variant="ghost" className="text-gray-700 hover:text-blue-600">
+                  Contact
                 </Button>
               </Link>
 
               <Link href="/cart">
                 <Button
                   variant="default"
-                  className="relative bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800"
+                  className="relative bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-sm sm:text-base"
                 >
-                  <ShoppingCart className="h-5 w-5 mr-2" />
-                  Enquiry Cart
+                  <ShoppingCart className="h-4 w-4 sm:h-5 sm:w-5 sm:mr-2" />
+                  <span className="hidden sm:inline">Enquiry Cart</span>
                   {totalItems > 0 && (
                     <Badge
                       className="absolute -top-2 -right-2 h-6 w-6 flex items-center justify-center p-0 bg-orange-500 border-2 border-white"

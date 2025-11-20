@@ -50,4 +50,29 @@ export default defineSchema({
     role: v.union(v.literal("owner"), v.literal("staff")),
     createdAt: v.number(),
   }).index("by_clerk_id", ["clerkId"]),
+
+  blogPosts: defineTable({
+    title: v.string(),
+    slug: v.string(),
+    excerpt: v.optional(v.string()),
+    content: v.string(),
+    image: v.optional(v.string()),
+    author: v.optional(v.string()),
+    published: v.boolean(),
+    publishedAt: v.optional(v.number()),
+    createdAt: v.number(),
+    updatedAt: v.number(),
+  })
+    .index("by_slug", ["slug"])
+    .index("by_published", ["published"]),
+
+  contacts: defineTable({
+    name: v.string(),
+    email: v.string(),
+    phone: v.optional(v.string()),
+    subject: v.string(),
+    message: v.string(),
+    status: v.union(v.literal("new"), v.literal("read"), v.literal("responded")),
+    createdAt: v.number(),
+  }).index("by_status", ["status"]),
 });

@@ -9,7 +9,9 @@
  */
 
 import type * as admin from "../admin.js";
+import type * as blogPosts from "../blogPosts.js";
 import type * as categories from "../categories.js";
+import type * as contacts from "../contacts.js";
 import type * as enquiries from "../enquiries.js";
 import type * as products from "../products.js";
 
@@ -21,7 +23,9 @@ import type {
 
 declare const fullApi: ApiFromModules<{
   admin: typeof admin;
+  blogPosts: typeof blogPosts;
   categories: typeof categories;
+  contacts: typeof contacts;
   enquiries: typeof enquiries;
   products: typeof products;
 }>;
