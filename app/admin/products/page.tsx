@@ -58,7 +58,7 @@ interface ProductFormProps {
 }
 
 const ProductForm = memo(function ProductForm({ onSubmit, submitLabel, formData, setFormData, categories }: ProductFormProps) {
-  const handleFieldChange = useCallback((field: keyof FormData, value: any) => {
+  const handleFieldChange = useCallback((field: keyof FormData, value: string | string[] | boolean) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   }, [setFormData]);
 
