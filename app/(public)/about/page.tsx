@@ -67,7 +67,7 @@ export default function AboutPage() {
                 <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900">Our Vision</h3>
               </div>
               <p className="text-sm sm:text-base lg:text-lg text-gray-700 leading-relaxed">
-                To become Kenya's most trusted and reliable auto parts supplier, known for our integrity,
+                To become Kenya&apos;s most trusted and reliable auto parts supplier, known for our integrity,
                 quality products, and commitment to customer satisfaction. We envision a future where every
                 vehicle owner has access to genuine parts at fair prices.
               </p>
