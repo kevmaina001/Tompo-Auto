@@ -9,7 +9,7 @@ export default function AboutPage() {
         <div className="container mx-auto px-4 sm:px-6 relative z-10">
           <div className="max-w-4xl mx-auto text-center">
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 sm:mb-6">
-              About Tompos Auto Spare Parts
+              About Tompo's Auto Spare Parts
             </h1>
             <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-blue-100 leading-relaxed">
               Your trusted partner for quality automotive parts in Kenya
@@ -27,7 +27,7 @@ export default function AboutPage() {
             </h2>
             <div className="prose prose-sm sm:prose lg:prose-lg max-w-none text-gray-700">
               <p className="text-base sm:text-lg leading-relaxed mb-4">
-                Tompos Auto Spare Parts has been serving the Kenyan automotive industry with dedication and excellence.
+                Tompo's Auto Spare Parts has been serving the Kenyan automotive industry with dedication and excellence.
                 We understand that finding reliable, quality auto parts is crucial for keeping vehicles running smoothly
                 and safely on our roads.
               </p>
@@ -80,7 +80,7 @@ export default function AboutPage() {
       <section className="py-12 sm:py-16 lg:py-20">
         <div className="container mx-auto px-4 sm:px-6">
           <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-8 sm:mb-12 text-center">
-            Why Choose Tompos Auto?
+            Why Choose Tompo's Auto?
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 max-w-6xl mx-auto">
             {/* Quality Parts */}

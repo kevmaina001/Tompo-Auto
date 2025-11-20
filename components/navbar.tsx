@@ -43,9 +43,11 @@ export function Navbar() {
                 </div>
                 <div>
                   <div className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent">
-                    Tompos Auto
+                    Tompo's Auto
                   </div>
-                  <div className="text-xs text-gray-500">Spare Parts</div>
+                  <div className="text-xs text-gray-500 leading-tight">
+                    Where quality<br />Meets Experience 🚘
+                  </div>
                 </div>
               </Link>
             </div>
