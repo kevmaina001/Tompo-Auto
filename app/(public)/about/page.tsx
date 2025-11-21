@@ -1,4 +1,16 @@
 import { Shield, Award, Users, Clock, CheckCircle, Wrench } from "lucide-react";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "About Us - Quality Auto Parts in Kenya",
+  description: "Learn about Tompo's Auto Spare Parts - Kenya's trusted supplier of genuine auto parts. Our mission is to provide quality automotive parts at competitive prices with expert service.",
+  keywords: ["about Tompo's Auto", "auto parts Kenya", "car parts supplier Nairobi", "genuine auto parts"],
+  openGraph: {
+    title: "About Tompo's Auto Spare Parts",
+    description: "Your trusted partner for quality automotive parts in Kenya. Learn about our mission, vision, and commitment to excellence.",
+    type: "website",
+  },
+};
 
 export default function AboutPage() {
   return (

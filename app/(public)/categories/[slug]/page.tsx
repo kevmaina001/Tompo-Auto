@@ -9,6 +9,7 @@ import Link from "next/link";
 import { ShoppingCart, ArrowLeft, CheckCircle } from "lucide-react";
 import { useCart } from "@/lib/cart-context";
 import { useParams } from "next/navigation";
+import { useEffect } from "react";
 
 export default function CategoryPage() {
   const params = useParams();
@@ -21,6 +22,13 @@ export default function CategoryPage() {
   const products = allProducts?.filter(
     (p) => category && p.categoryId === category._id
   );
+
+  // Update page title for SEO
+  useEffect(() => {
+    if (category) {
+      document.title = `${category.name} - Auto Parts | Tompo's Auto Spare Parts`;
+    }
+  }, [category?.name]);
 
   const handleAddToCart = (product: NonNullable<typeof products>[number]) => {
     addItem({
@@ -39,7 +47,32 @@ export default function CategoryPage() {
     );
   }
 
+  // JSON-LD structured data for the category
+  const categoryJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name: `${category.name} - Auto Parts`,
+    description: category.description || `Browse quality ${category.name} auto parts at Tompo's Auto Spare Parts. Genuine parts for all vehicle makes.`,
+    url: `https://www.tomposauto.com/categories/${category.slug}`,
+    isPartOf: {
+      "@type": "WebSite",
+      name: "Tompo's Auto Spare Parts",
+      url: "https://www.tomposauto.com",
+    },
+    provider: {
+      "@type": "AutoPartsStore",
+      name: "Tompo's Auto Spare Parts",
+      url: "https://www.tomposauto.com",
+    },
+  };
+
   return (
+    <>
+      {/* JSON-LD Structured Data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(categoryJsonLd) }}
+      />
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 md:py-8">
       <Link
         href="/"
@@ -142,5 +175,6 @@ export default function CategoryPage() {
         </>
       )}
     </div>
+    </>
   );
 }

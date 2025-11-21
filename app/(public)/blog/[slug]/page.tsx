@@ -6,6 +6,7 @@ import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { Calendar, User, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useEffect } from "react";
 
 export default function BlogPostPage() {
   const params = useParams();
@@ -71,7 +72,47 @@ export default function BlogPostPage() {
         day: "numeric",
       });
 
+  // Update page title for SEO
+  useEffect(() => {
+    document.title = `${blogPost.title} | Tompo's Auto Blog`;
+  }, [blogPost.title]);
+
+  // JSON-LD structured data for the blog article
+  const articleJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline: blogPost.title,
+    description: blogPost.excerpt || blogPost.content.substring(0, 160),
+    image: blogPost.image || "https://www.tomposauto.com/og-image.jpg",
+    author: {
+      "@type": "Person",
+      name: blogPost.author || "Tompo's Auto",
+    },
+    publisher: {
+      "@type": "Organization",
+      name: "Tompo's Auto Spare Parts",
+      logo: {
+        "@type": "ImageObject",
+        url: "https://www.tomposauto.com/logo.png",
+      },
+    },
+    datePublished: blogPost.publishedAt
+      ? new Date(blogPost.publishedAt).toISOString()
+      : new Date(blogPost.createdAt).toISOString(),
+    dateModified: new Date(blogPost.updatedAt).toISOString(),
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": `https://www.tomposauto.com/blog/${blogPost.slug}`,
+    },
+  };
+
   return (
+    <>
+      {/* JSON-LD Structured Data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
+      />
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
       {/* Unpublished Banner */}
       {!blogPost.published && (
@@ -171,5 +212,6 @@ export default function BlogPostPage() {
         </div>
       </article>
     </div>
+    </>
   );
 }

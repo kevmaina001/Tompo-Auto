@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { Button } from "@/components/ui/button";
@@ -11,6 +11,11 @@ import { MapPin, Phone, Mail, Clock, Send, CheckCircle } from "lucide-react";
 
 export default function ContactPage() {
   const createContact = useMutation(api.contacts.create);
+
+  // Update page title for SEO
+  useEffect(() => {
+    document.title = "Contact Us | Tompo's Auto Spare Parts - Get in Touch";
+  }, []);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [error, setError] = useState("");

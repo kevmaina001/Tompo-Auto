@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import Link from "next/link";
+import Head from "next/head";
 import { ShoppingCart, ArrowLeft, Plus, Minus } from "lucide-react";
 import { useCart } from "@/lib/cart-context";
 import { useParams } from "next/navigation";
@@ -26,12 +27,14 @@ export default function ProductPage() {
   const [selectedImage, setSelectedImage] = useState(0);
   const [quantity, setQuantity] = useState(1);
 
-  // Increment views when product loads
+  // Increment views and update page title when product loads
   useEffect(() => {
     if (product) {
       incrementViews({ id: product._id });
+      // Update document title for SEO
+      document.title = `${product.title} | Tompo's Auto Spare Parts`;
     }
-  }, [product?._id]);
+  }, [product?._id, product?.title]);
 
   if (!product) {
     return (
@@ -59,7 +62,43 @@ export default function ProductPage() {
     setQuantity(1);
   };
 
+  // JSON-LD structured data for the product
+  const productJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: product.title,
+    description: product.description || `${product.title} - Quality auto spare part available at Tompo's Auto`,
+    image: product.images[0] || "",
+    brand: product.brand ? {
+      "@type": "Brand",
+      name: product.brand,
+    } : undefined,
+    sku: product.oemNumber || product._id,
+    mpn: product.oemNumber,
+    offers: {
+      "@type": "Offer",
+      url: `https://www.tomposauto.com/products/${product.slug}`,
+      priceCurrency: "KES",
+      price: product.price,
+      availability: product.stock > 0
+        ? "https://schema.org/InStock"
+        : "https://schema.org/OutOfStock",
+      seller: {
+        "@type": "Organization",
+        name: "Tompo's Auto Spare Parts",
+      },
+    },
+    category: category?.name || "Auto Parts",
+  };
+
   return (
+    <>
+      {/* JSON-LD Structured Data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(productJsonLd) }}
+      />
+
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <Link
         href={category ? `/categories/${category.slug}` : "/"}
@@ -217,5 +256,6 @@ export default function ProductPage() {
         </div>
       </div>
     </div>
+    </>
   );
 }

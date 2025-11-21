@@ -4,9 +4,15 @@ import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import Link from "next/link";
 import { Calendar, User, ArrowRight } from "lucide-react";
+import { useEffect } from "react";
 
 export default function BlogPage() {
   const blogPosts = useQuery(api.blogPosts.listPublished);
+
+  // Update page title for SEO
+  useEffect(() => {
+    document.title = "Blog - Automotive Tips & Guides | Tompo's Auto Spare Parts";
+  }, []);
 
   if (!blogPosts) {
     return (
@@ -19,7 +25,34 @@ export default function BlogPage() {
     );
   }
 
+  // JSON-LD structured data for the blog
+  const blogJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Blog",
+    name: "Tompo's Auto Blog",
+    description: "Tips, guides, and insights about automotive maintenance, car parts, and vehicle care from Tompo's Auto Spare Parts.",
+    url: "https://www.tomposauto.com/blog",
+    publisher: {
+      "@type": "Organization",
+      name: "Tompo's Auto Spare Parts",
+      logo: {
+        "@type": "ImageObject",
+        url: "https://www.tomposauto.com/logo.png",
+      },
+    },
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": "https://www.tomposauto.com/blog",
+    },
+  };
+
   return (
+    <>
+      {/* JSON-LD Structured Data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(blogJsonLd) }}
+      />
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
       {/* Hero Section */}
       <section className="relative bg-gradient-to-br from-blue-700 via-blue-600 to-blue-800 text-white py-16 sm:py-20 lg:py-24">
@@ -135,5 +168,6 @@ export default function BlogPage() {
         </div>
       </section>
     </div>
+    </>
   );
 }
