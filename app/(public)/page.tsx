@@ -26,7 +26,7 @@ export default function HomePage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-blue-700 via-blue-600 to-indigo-800 overflow-hidden min-h-[600px] flex items-center">
+      <section className="relative bg-gradient-to-br from-blue-700 via-blue-600 to-indigo-800 overflow-hidden min-h-[400px] md:min-h-[600px] flex items-center">
         {/* Animated Background Pattern */}
         <div className="absolute inset-0 bg-black opacity-10" />
         <div className="absolute inset-0" aria-hidden="true">
@@ -47,7 +47,7 @@ export default function HomePage() {
               </div>
 
               <div className="space-y-4">
-                <h1 className="text-5xl md:text-7xl font-black text-white leading-tight drop-shadow-2xl">
+                <h1 className="text-3xl sm:text-5xl md:text-7xl font-black text-white leading-tight drop-shadow-2xl">
                   Premium
                   <br />
                   <span className="bg-gradient-to-r from-yellow-300 via-orange-300 to-red-300 bg-clip-text text-transparent animate-gradient">
@@ -55,7 +55,7 @@ export default function HomePage() {
                   </span>
                 </h1>
 
-                <p className="text-xl md:text-2xl text-blue-50 leading-relaxed font-medium max-w-xl mx-auto lg:mx-0">
+                <p className="text-base sm:text-xl md:text-2xl text-blue-50 leading-relaxed font-medium max-w-xl mx-auto lg:mx-0">
                   Quality spare parts for <span className="text-yellow-300 font-bold">all vehicle makes</span> and models. Browse, select, and get instant quotes via WhatsApp.
                 </p>
               </div>
@@ -80,18 +80,18 @@ export default function HomePage() {
               </div>
 
               {/* Stats */}
-              <div className="grid grid-cols-3 gap-6 pt-8 border-t border-white/20">
+              <div className="grid grid-cols-3 gap-3 sm:gap-6 pt-6 sm:pt-8 border-t border-white/20">
                 <div className="text-center lg:text-left">
-                  <div className="text-3xl md:text-4xl font-black text-white">500+</div>
-                  <div className="text-sm text-blue-200">Products</div>
+                  <div className="text-2xl sm:text-3xl md:text-4xl font-black text-white">500+</div>
+                  <div className="text-xs sm:text-sm text-blue-200">Products</div>
                 </div>
                 <div className="text-center lg:text-left">
-                  <div className="text-3xl md:text-4xl font-black text-white">1000+</div>
-                  <div className="text-sm text-blue-200">Customers</div>
+                  <div className="text-2xl sm:text-3xl md:text-4xl font-black text-white">1000+</div>
+                  <div className="text-xs sm:text-sm text-blue-200">Customers</div>
                 </div>
                 <div className="text-center lg:text-left">
-                  <div className="text-3xl md:text-4xl font-black text-white">24/7</div>
-                  <div className="text-sm text-blue-200">Support</div>
+                  <div className="text-2xl sm:text-3xl md:text-4xl font-black text-white">24/7</div>
+                  <div className="text-xs sm:text-sm text-blue-200">Support</div>
                 </div>
               </div>
             </div>
@@ -166,8 +166,8 @@ export default function HomePage() {
       </section>
 
       {/* Features Section */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 md:py-16">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 md:gap-8">
           {[
             { icon: Shield, title: "Authentic Parts", desc: "100% genuine products" },
             { icon: TrendingUp, title: "Best Prices", desc: "Competitive market rates" },
@@ -175,21 +175,21 @@ export default function HomePage() {
             { icon: CheckCircle, title: "Quality Assured", desc: "Tested & verified" }
           ].map((feature, idx) => (
             <div key={idx} className="text-center group">
-              <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl mb-4 group-hover:scale-110 transition-transform shadow-lg">
-                <feature.icon className="h-8 w-8 text-white" />
+              <div className="inline-flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl sm:rounded-2xl mb-2 sm:mb-3 md:mb-4 group-hover:scale-110 transition-transform shadow-lg">
+                <feature.icon className="h-6 w-6 sm:h-7 sm:w-7 md:h-8 md:w-8 text-white" />
               </div>
-              <h3 className="font-bold text-lg mb-2 text-gray-900">{feature.title}</h3>
-              <p className="text-gray-600 text-sm">{feature.desc}</p>
+              <h3 className="font-bold text-sm sm:text-base md:text-lg mb-1 sm:mb-2 text-gray-900">{feature.title}</h3>
+              <p className="text-gray-600 text-xs sm:text-sm">{feature.desc}</p>
             </div>
           ))}
         </div>
       </div>
 
       {/* Categories Section */}
-      <section id="categories" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="text-center mb-12">
-          <h2 className="text-4xl font-bold text-gray-900 mb-4">Browse by Category</h2>
-          <p className="text-gray-600 max-w-2xl mx-auto">
+      <section id="categories" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 md:py-16">
+        <div className="text-center mb-6 sm:mb-8 md:mb-12">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-2 sm:mb-3 md:mb-4">Browse by Category</h2>
+          <p className="text-sm sm:text-base text-gray-600 max-w-2xl mx-auto px-4">
             Explore our wide range of auto parts organized by category for easy navigation
           </p>
         </div>
@@ -200,7 +200,7 @@ export default function HomePage() {
             <p className="mt-4 text-gray-600">Loading categories...</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
             {categories.map((category) => (
               <Link
                 key={category._id}
@@ -217,15 +217,15 @@ export default function HomePage() {
                       />
                     </div>
                   )}
-                  <CardHeader className="pb-3">
-                    <CardTitle className="text-lg font-bold group-hover:text-blue-600 transition-colors flex items-center justify-between">
-                      {category.name}
-                      <ArrowRight className="h-5 w-5 opacity-0 group-hover:opacity-100 transition-opacity" />
+                  <CardHeader className="pb-2 sm:pb-3 px-3 sm:px-4 pt-3 sm:pt-4">
+                    <CardTitle className="text-sm sm:text-base md:text-lg font-bold group-hover:text-blue-600 transition-colors flex items-center justify-between">
+                      <span className="line-clamp-1">{category.name}</span>
+                      <ArrowRight className="h-4 w-4 sm:h-5 sm:w-5 opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0 ml-1" />
                     </CardTitle>
                   </CardHeader>
                   {category.description && (
-                    <CardContent className="pt-0">
-                      <p className="text-sm text-gray-600 line-clamp-2">
+                    <CardContent className="pt-0 px-3 sm:px-4 pb-3 sm:pb-4">
+                      <p className="text-xs sm:text-sm text-gray-600 line-clamp-2">
                         {category.description}
                       </p>
                     </CardContent>
@@ -245,11 +245,11 @@ export default function HomePage() {
       </section>
 
       {/* Featured Products Section */}
-      <section id="featured" className="bg-gradient-to-b from-white to-gray-50 py-16">
+      <section id="featured" className="bg-gradient-to-b from-white to-gray-50 py-8 sm:py-12 md:py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">Featured Products</h2>
-            <p className="text-gray-600 max-w-2xl mx-auto">
+          <div className="text-center mb-6 sm:mb-8 md:mb-12">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-2 sm:mb-3 md:mb-4">Featured Products</h2>
+            <p className="text-sm sm:text-base text-gray-600 max-w-2xl mx-auto px-4">
               Hand-picked premium parts for your vehicle. Special deals and popular items.
             </p>
           </div>
@@ -260,7 +260,7 @@ export default function HomePage() {
               <p className="mt-4 text-gray-600">Loading featured products...</p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
               {featuredProducts.map((product) => (
                 <Card
                   key={product._id}
@@ -275,17 +275,19 @@ export default function HomePage() {
                           className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                         />
                         {product.featured && (
-                          <div className="absolute top-3 left-3">
-                            <Badge className="bg-gradient-to-r from-orange-500 to-red-500 text-white border-0">
-                              <Star className="h-3 w-3 mr-1 fill-current" />
-                              Featured
+                          <div className="absolute top-1.5 left-1.5 sm:top-2 sm:left-2 md:top-3 md:left-3">
+                            <Badge className="bg-gradient-to-r from-orange-500 to-red-500 text-white border-0 text-xs px-1.5 py-0.5 sm:px-2 sm:py-1">
+                              <Star className="h-2.5 w-2.5 sm:h-3 sm:w-3 mr-0.5 sm:mr-1 fill-current" />
+                              <span className="hidden sm:inline">Featured</span>
+                              <span className="sm:hidden">⭐</span>
                             </Badge>
                           </div>
                         )}
                         {product.stock > 0 && product.stock <= 10 && (
-                          <div className="absolute top-3 right-3">
-                            <Badge variant="destructive">
-                              Only {product.stock} left
+                          <div className="absolute top-1.5 right-1.5 sm:top-2 sm:right-2 md:top-3 md:right-3">
+                            <Badge variant="destructive" className="text-xs px-1.5 py-0.5 sm:px-2 sm:py-1">
+                              <span className="hidden sm:inline">Only {product.stock} left</span>
+                              <span className="sm:hidden">{product.stock}</span>
                             </Badge>
                           </div>
                         )}
@@ -293,42 +295,44 @@ export default function HomePage() {
                     )}
                   </Link>
 
-                  <CardHeader className="pb-3">
+                  <CardHeader className="pb-2 sm:pb-3 px-2 sm:px-3 md:px-4 pt-2 sm:pt-3 md:pt-4">
                     <Link href={`/products/${product.slug}`}>
-                      <CardTitle className="text-base font-bold group-hover:text-blue-600 transition-colors line-clamp-2 min-h-[3rem]">
+                      <CardTitle className="text-xs sm:text-sm md:text-base font-bold group-hover:text-blue-600 transition-colors line-clamp-2 min-h-[2rem] sm:min-h-[2.5rem] md:min-h-[3rem]">
                         {product.title}
                       </CardTitle>
                     </Link>
                     {product.brand && (
-                      <p className="text-xs text-gray-500 font-medium mt-1">{product.brand}</p>
+                      <p className="text-[10px] sm:text-xs text-gray-500 font-medium mt-0.5 sm:mt-1 line-clamp-1">{product.brand}</p>
                     )}
                   </CardHeader>
 
-                  <CardContent className="space-y-3">
-                    <div className="flex items-center justify-between">
+                  <CardContent className="space-y-2 sm:space-y-3 px-2 sm:px-3 md:px-4 pb-2 sm:pb-3 md:pb-4">
+                    <div className="flex items-center justify-between gap-1">
                       <div>
-                        <p className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent">
+                        <p className="text-base sm:text-lg md:text-2xl font-bold bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent">
                           {product.price.toLocaleString()}
                         </p>
-                        <p className="text-xs text-gray-500">KES</p>
+                        <p className="text-[10px] sm:text-xs text-gray-500">KES</p>
                       </div>
                       {product.stock > 0 ? (
-                        <Badge variant="outline" className="border-green-500 text-green-700 bg-green-50">
-                          <CheckCircle className="h-3 w-3 mr-1" />
-                          In Stock
+                        <Badge variant="outline" className="border-green-500 text-green-700 bg-green-50 text-[10px] sm:text-xs px-1 sm:px-2 py-0.5">
+                          <CheckCircle className="h-2.5 w-2.5 sm:h-3 sm:w-3 mr-0.5 sm:mr-1" />
+                          <span className="hidden sm:inline">In Stock</span>
+                          <span className="sm:hidden">✓</span>
                         </Badge>
                       ) : (
-                        <Badge variant="destructive">Out of Stock</Badge>
+                        <Badge variant="destructive" className="text-[10px] sm:text-xs px-1 sm:px-2 py-0.5">Out</Badge>
                       )}
                     </div>
 
                     <Button
-                      className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 group"
+                      className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 group text-xs sm:text-sm py-1.5 sm:py-2 h-auto"
                       onClick={() => handleAddToCart(product)}
                       disabled={product.stock === 0}
                     >
-                      <ShoppingCart className="mr-2 h-4 w-4 group-hover:animate-bounce" />
-                      Add to Enquiry
+                      <ShoppingCart className="mr-1 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4 group-hover:animate-bounce" />
+                      <span className="hidden sm:inline">Add to Enquiry</span>
+                      <span className="sm:hidden">Add</span>
                     </Button>
                   </CardContent>
                 </Card>
