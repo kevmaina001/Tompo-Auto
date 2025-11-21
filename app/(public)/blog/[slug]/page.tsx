@@ -25,7 +25,7 @@ export default function BlogPostPage() {
     );
   }
 
-  if (blogPost === null || !blogPost.published) {
+  if (blogPost === null) {
     return (
       <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white flex items-center justify-center">
         <div className="text-center max-w-md mx-auto px-4">
@@ -73,6 +73,13 @@ export default function BlogPostPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
+      {/* Unpublished Banner */}
+      {!blogPost.published && (
+        <div className="bg-yellow-500 text-white py-3 px-4 text-center font-semibold">
+          ⚠️ Preview Mode: This post is not published yet and is only visible to you
+        </div>
+      )}
+
       <article className="py-8 sm:py-12 lg:py-16">
         <div className="container mx-auto px-4 sm:px-6">
           {/* Back Button */}
