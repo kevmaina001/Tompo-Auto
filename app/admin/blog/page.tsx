@@ -70,13 +70,14 @@ const BlogForm = memo(function BlogForm({
         </div>
 
         <div className="col-span-2">
-          <Label htmlFor="slug">Slug</Label>
+          <Label htmlFor="slug">Slug (URL-friendly name)</Label>
           <Input
             id="slug"
             value={formData.slug}
             onChange={(e) => handleFieldChange('slug', e.target.value)}
-            placeholder="Auto-generated from title"
+            placeholder="Leave empty to auto-generate from title"
           />
+          <p className="text-xs text-gray-500 mt-1">Leave empty to automatically generate from title. Example: understanding-car-aerodynamics</p>
         </div>
 
         <div className="col-span-2">
@@ -230,10 +231,10 @@ export default function BlogPage() {
     if (!editingPost) return;
 
     try {
-      // If title changed, regenerate slug from new title
-      const newSlug = formData.title !== editingPost.title
-        ? generateSlug(formData.title)
-        : formData.slug;
+      // Always regenerate slug from title (unless manually specified)
+      const newSlug = formData.slug.trim()
+        ? formData.slug
+        : generateSlug(formData.title);
 
       await updateBlogPost({
         id: editingPost._id,
@@ -268,7 +269,7 @@ export default function BlogPage() {
     setEditingPost(post);
     setFormData({
       title: post.title,
-      slug: post.slug,
+      slug: "", // Clear slug so it regenerates from new title
       excerpt: post.excerpt || "",
       content: post.content,
       image: post.image || "",
