@@ -35,6 +35,12 @@ export default function AdminLayout({
                   Products
                 </Link>
                 <Link
+                  href="/admin/blog"
+                  className="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-900 hover:text-gray-700"
+                >
+                  Blog
+                </Link>
+                <Link
                   href="/admin/enquiries"
                   className="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-900 hover:text-gray-700"
                 >
