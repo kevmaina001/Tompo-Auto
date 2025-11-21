@@ -196,12 +196,21 @@ export default function BlogPage() {
     });
   };
 
+  const generateSlug = (title: string): string => {
+    return title
+      .toLowerCase()
+      .replace(/[^a-z0-9\s-]/g, '') // Remove special characters
+      .replace(/\s+/g, '-') // Replace spaces with hyphens
+      .replace(/-+/g, '-') // Replace multiple hyphens with single hyphen
+      .replace(/^-|-$/g, ''); // Remove leading/trailing hyphens
+  };
+
   const handleCreatePost = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
     try {
       await createBlogPost({
         title: formData.title,
-        slug: formData.slug || formData.title.toLowerCase().replace(/\s+/g, "-"),
+        slug: formData.slug || generateSlug(formData.title),
         excerpt: formData.excerpt || undefined,
         content: formData.content,
         image: formData.image || undefined,
@@ -221,10 +230,15 @@ export default function BlogPage() {
     if (!editingPost) return;
 
     try {
+      // If title changed, regenerate slug from new title
+      const newSlug = formData.title !== editingPost.title
+        ? generateSlug(formData.title)
+        : formData.slug;
+
       await updateBlogPost({
         id: editingPost._id,
         title: formData.title,
-        slug: formData.slug,
+        slug: newSlug,
         excerpt: formData.excerpt || undefined,
         content: formData.content,
         image: formData.image || undefined,
