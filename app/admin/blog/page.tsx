@@ -23,6 +23,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
+import { FastMultiUpload } from "@/components/fast-multi-upload";
 import { Plus, Edit, Trash2, Eye, EyeOff } from "lucide-react";
 import type { Id } from "@/convex/_generated/dataModel";
 
@@ -100,26 +101,29 @@ const BlogForm = memo(function BlogForm({
         </div>
 
         <div className="col-span-2">
-          <Label htmlFor="image">Featured Image URL</Label>
-          <Input
-            id="image"
-            type="url"
-            value={formData.image}
-            onChange={(e) => handleFieldChange('image', e.target.value)}
-            placeholder="https://example.com/image.jpg"
-          />
-          {formData.image && (
-            <div className="mt-2">
-              <img
-                src={formData.image}
-                alt="Preview"
-                className="w-full h-48 object-cover rounded-lg"
-                onError={(e) => {
-                  (e.target as HTMLImageElement).style.display = 'none';
-                }}
+          <Label>Featured Image</Label>
+          <div className="space-y-4">
+            <div className="border rounded-lg p-4">
+              <h4 className="font-medium mb-2 text-sm">⚡ Upload Image (Fast Direct Upload)</h4>
+              <FastMultiUpload
+                currentImages={formData.image ? [formData.image] : []}
+                onUpdate={(urls) => handleFieldChange('image', urls[0] || '')}
+                onRemove={() => handleFieldChange('image', '')}
+                maxFiles={1}
               />
             </div>
-          )}
+
+            <div className="border rounded-lg p-4 bg-blue-50">
+              <h4 className="font-medium mb-2 text-sm">🔗 Or Paste Image URL</h4>
+              <Input
+                id="image"
+                type="url"
+                value={formData.image}
+                onChange={(e) => handleFieldChange('image', e.target.value)}
+                placeholder="https://example.com/image.jpg"
+              />
+            </div>
+          </div>
         </div>
 
         <div className="col-span-2">
