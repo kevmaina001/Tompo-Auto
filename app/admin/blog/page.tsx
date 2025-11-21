@@ -64,7 +64,9 @@ const BlogForm = memo(function BlogForm({
             value={formData.title}
             onChange={(e) => handleFieldChange('title', e.target.value)}
             required
+            placeholder="e.g., Understanding Car Aerodynamics"
           />
+          <p className="text-xs text-gray-500 mt-1">Enter the blog post title (not the image URL)</p>
         </div>
 
         <div className="col-span-2">
