@@ -250,8 +250,7 @@ export default function CartPage() {
               </Button>
 
               <p className="text-xs text-gray-500 text-center">
-                Your enquiry will be sent via WhatsApp. We&apos;ll get back to you
-                with availability and final pricing.
+                {"Your enquiry will be sent via WhatsApp. We'll get back to you with availability and final pricing."}
               </p>
             </CardContent>
           </Card>

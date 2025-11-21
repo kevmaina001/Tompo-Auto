@@ -146,7 +146,7 @@ const BlogForm = memo(function BlogForm({
             </Label>
           </div>
           <p className="text-xs text-gray-500 mt-1">
-            Unpublished posts won&apos;t be visible to visitors
+            {"Unpublished posts won't be visible to visitors"}
           </p>
         </div>
       </div>
