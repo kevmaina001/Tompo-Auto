@@ -13,49 +13,6 @@ interface FastMultiUploadProps {
   maxFiles?: number;
 }
 
-// Compress image before upload
-async function compressImage(file: File, maxWidth = 1200, quality = 0.8): Promise<Blob> {
-  return new Promise((resolve, reject) => {
-    const img = new Image();
-    img.onload = () => {
-      const canvas = document.createElement("canvas");
-      let width = img.width;
-      let height = img.height;
-
-      // Scale down if larger than maxWidth
-      if (width > maxWidth) {
-        height = (height * maxWidth) / width;
-        width = maxWidth;
-      }
-
-      canvas.width = width;
-      canvas.height = height;
-
-      const ctx = canvas.getContext("2d");
-      if (!ctx) {
-        reject(new Error("Could not get canvas context"));
-        return;
-      }
-
-      ctx.drawImage(img, 0, 0, width, height);
-
-      canvas.toBlob(
-        (blob) => {
-          if (blob) {
-            resolve(blob);
-          } else {
-            reject(new Error("Could not compress image"));
-          }
-        },
-        "image/jpeg",
-        quality
-      );
-    };
-    img.onerror = () => reject(new Error("Could not load image"));
-    img.src = URL.createObjectURL(file);
-  });
-}
-
 export function FastMultiUpload({
   currentImages,
   onUpdate,
@@ -64,7 +21,6 @@ export function FastMultiUpload({
 }: FastMultiUploadProps) {
   const [uploading, setUploading] = useState(false);
   const [progress, setProgress] = useState(0);
-  const [statusText, setStatusText] = useState("");
   const cameraInputRef = useRef<HTMLInputElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -90,29 +46,11 @@ export function FastMultiUpload({
       for (let i = 0; i < totalFiles; i++) {
         const file = files[i];
 
-        // Show compression status
-        setStatusText(`Compressing ${i + 1}/${totalFiles}...`);
-
-        // Compress the image (reduces size by 60-80%)
-        let fileToUpload: Blob | File = file;
-        if (file.type.startsWith("image/") && file.size > 100000) { // Only compress if > 100KB
-          try {
-            fileToUpload = await compressImage(file);
-          } catch {
-            // If compression fails, use original
-            fileToUpload = file;
-          }
-        }
-
-        setStatusText(`Uploading ${i + 1}/${totalFiles}...`);
-
         // Create form data
         const formData = new FormData();
-        formData.append("file", fileToUpload, file.name);
-        formData.append("upload_preset", process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET!);
+        formData.append("file", file);
+        formData.append("upload_preset", process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET || "");
         formData.append("folder", "auto-spares");
-        // Use eager transformation for faster processing
-        formData.append("eager", "c_limit,w_800,q_auto");
 
         // Direct upload to Cloudinary
         const response = await fetch(
@@ -124,6 +62,8 @@ export function FastMultiUpload({
         );
 
         if (!response.ok) {
+          const errorData = await response.json().catch(() => ({}));
+          console.error("Cloudinary error:", errorData);
           throw new Error(`Upload failed for ${file.name}`);
         }
 
@@ -136,14 +76,12 @@ export function FastMultiUpload({
 
       // Add all uploaded URLs to current images
       onUpdate([...currentImages, ...uploadedUrls]);
-      setStatusText("");
     } catch (error) {
       console.error("Upload error:", error);
-      alert("Some uploads failed. Please try again.");
+      alert("Upload failed. Please try again.");
     } finally {
       setUploading(false);
       setProgress(0);
-      setStatusText("");
     }
   };
 
@@ -182,7 +120,7 @@ export function FastMultiUpload({
             {uploading ? (
               <>
                 <Loader2 className="mr-2 h-5 w-5 sm:h-4 sm:w-4 animate-spin" />
-                <span className="text-base sm:text-sm">{statusText || `${progress}%`}</span>
+                <span className="text-base sm:text-sm">Uploading... {progress}%</span>
               </>
             ) : (
               <>
@@ -216,7 +154,7 @@ export function FastMultiUpload({
             {uploading ? (
               <>
                 <Loader2 className="mr-2 h-5 w-5 sm:h-4 sm:w-4 animate-spin" />
-                <span className="text-base sm:text-sm">{statusText || `${progress}%`}</span>
+                <span className="text-base sm:text-sm">Uploading... {progress}%</span>
               </>
             ) : (
               <>
@@ -270,7 +208,7 @@ export function FastMultiUpload({
       )}
 
       <p className="text-xs text-gray-500">
-        📸 Images are auto-compressed for faster uploads. {currentImages.length}/{maxFiles}
+        📸 Take photos or select files. {currentImages.length}/{maxFiles}
       </p>
     </div>
   );
