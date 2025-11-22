@@ -223,7 +223,7 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
                     variant="outline"
                     className="w-full mt-4"
                   >
-                    View all results for "{searchTerm}"
+                    View all results for &ldquo;{searchTerm}&rdquo;
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>
                 )}
@@ -237,7 +237,7 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
                   <Search className="h-12 w-12 mx-auto" />
                 </div>
                 <p className="text-gray-600 font-medium">
-                  No products found for "{debouncedTerm}"
+                  No products found for &ldquo;{debouncedTerm}&rdquo;
                 </p>
                 <p className="text-sm text-gray-500 mt-1">
                   Try different keywords or browse categories
@@ -314,10 +314,10 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
                     Search Tips
                   </div>
                   <ul className="text-xs text-blue-700 space-y-1">
-                    <li>Search by product name: "brake pads"</li>
-                    <li>Search by brand: "Toyota", "Nissan"</li>
-                    <li>Search by OEM number: "04465-33450"</li>
-                    <li>Search by compatible model: "Corolla 2020"</li>
+                    <li>Search by product name: &ldquo;brake pads&rdquo;</li>
+                    <li>Search by brand: &ldquo;Toyota&rdquo;, &ldquo;Nissan&rdquo;</li>
+                    <li>Search by OEM number: &ldquo;04465-33450&rdquo;</li>
+                    <li>Search by compatible model: &ldquo;Corolla 2020&rdquo;</li>
                   </ul>
                 </div>
               </div>

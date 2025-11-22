@@ -307,7 +307,7 @@ export default function SearchPage() {
                   ) : (
                     <>
                       Found <span className="font-bold">{searchResults.length}</span>{" "}
-                      results for "<span className="font-medium">{searchTerm}</span>"
+                      results for &ldquo;<span className="font-medium">{searchTerm}</span>&rdquo;
                     </>
                   )}
                 </p>
