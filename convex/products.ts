@@ -142,20 +142,67 @@ export const remove = mutation({
   },
 });
 
-// Search products
+// Search products with advanced filtering
 export const search = query({
-  args: { searchTerm: v.string() },
+  args: {
+    searchTerm: v.string(),
+    categoryId: v.optional(v.id("categories")),
+    minPrice: v.optional(v.number()),
+    maxPrice: v.optional(v.number()),
+    inStockOnly: v.optional(v.boolean()),
+    limit: v.optional(v.number()),
+  },
   handler: async (ctx, args) => {
     const allProducts = await ctx.db.query("products").collect();
-    const searchLower = args.searchTerm.toLowerCase();
+    const searchLower = args.searchTerm.toLowerCase().trim();
+    const limit = args.limit ?? 20;
 
-    return allProducts.filter(
-      (product) =>
+    // If search term is empty, return empty array
+    if (!searchLower) return [];
+
+    let results = allProducts.filter((product) => {
+      // Text search across multiple fields
+      const matchesSearch =
         product.title.toLowerCase().includes(searchLower) ||
         product.description?.toLowerCase().includes(searchLower) ||
         product.brand?.toLowerCase().includes(searchLower) ||
-        product.oemNumber?.toLowerCase().includes(searchLower)
-    );
+        product.oemNumber?.toLowerCase().includes(searchLower) ||
+        product.compatibleModels?.some(model =>
+          model.toLowerCase().includes(searchLower)
+        );
+
+      if (!matchesSearch) return false;
+
+      // Category filter
+      if (args.categoryId && product.categoryId !== args.categoryId) {
+        return false;
+      }
+
+      // Price filters
+      if (args.minPrice !== undefined && product.price < args.minPrice) {
+        return false;
+      }
+      if (args.maxPrice !== undefined && product.price > args.maxPrice) {
+        return false;
+      }
+
+      // Stock filter
+      if (args.inStockOnly && product.stock <= 0) {
+        return false;
+      }
+
+      return true;
+    });
+
+    // Sort by relevance (title matches first, then by views)
+    results.sort((a, b) => {
+      const aTitle = a.title.toLowerCase().includes(searchLower) ? 1 : 0;
+      const bTitle = b.title.toLowerCase().includes(searchLower) ? 1 : 0;
+      if (bTitle !== aTitle) return bTitle - aTitle;
+      return b.views - a.views;
+    });
+
+    return results.slice(0, limit);
   },
 });
 

@@ -1,15 +1,29 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
-import { ShoppingCart, Phone, Mail, Wrench, Menu, X } from "lucide-react";
+import { ShoppingCart, Phone, Mail, Wrench, Menu, X, Search } from "lucide-react";
 import { useCart } from "@/lib/cart-context";
 import { Button } from "./ui/button";
 import { Badge } from "./ui/badge";
+import { SearchModal } from "./search-modal";
 
 export function Navbar() {
   const { totalItems } = useCart();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+
+  // Keyboard shortcut for search
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === "k") {
+        e.preventDefault();
+        setIsSearchOpen(true);
+      }
+    };
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, []);
 
   return (
     <>
@@ -57,6 +71,19 @@ export function Navbar() {
 
             {/* Desktop Menu */}
             <div className="hidden md:flex items-center space-x-2 lg:space-x-4">
+              {/* Search Button */}
+              <Button
+                variant="outline"
+                onClick={() => setIsSearchOpen(true)}
+                className="flex items-center gap-2 text-gray-600 hover:text-blue-600 border-gray-200 hover:border-blue-300 px-3"
+              >
+                <Search className="h-4 w-4" />
+                <span className="hidden lg:inline">Search parts...</span>
+                <kbd className="hidden lg:inline-flex items-center gap-1 rounded border bg-gray-100 px-1.5 text-xs text-gray-500">
+                  <span className="text-xs">⌘</span>K
+                </kbd>
+              </Button>
+
               <Link href="/">
                 <Button variant="ghost" className="text-gray-700 hover:text-blue-600">
                   Home
@@ -101,6 +128,16 @@ export function Navbar() {
 
             {/* Mobile Menu Button & Cart */}
             <div className="flex md:hidden items-center space-x-2">
+              {/* Mobile Search Button */}
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setIsSearchOpen(true)}
+                className="p-2"
+              >
+                <Search className="h-5 w-5 text-gray-700" />
+              </Button>
+
               <Link href="/cart">
                 <Button
                   variant="default"
@@ -170,6 +207,9 @@ export function Navbar() {
           </div>
         )}
       </nav>
+
+      {/* Search Modal */}
+      <SearchModal isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
     </>
   );
 }
