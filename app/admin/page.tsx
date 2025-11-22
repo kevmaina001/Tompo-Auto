@@ -71,7 +71,22 @@ export default function AdminDashboard() {
             <h3 className="text-lg font-medium text-gray-900 mb-4">
               Low Stock Products
             </h3>
-            <div className="overflow-x-auto">
+
+            {/* Mobile Card View */}
+            <div className="sm:hidden space-y-3">
+              {lowStockProducts.map((product) => (
+                <div key={product._id} className="border rounded-lg p-3">
+                  <p className="font-medium text-gray-900 text-sm truncate">{product.title}</p>
+                  <div className="flex justify-between mt-2 text-sm">
+                    <span className="text-red-600 font-medium">{product.stock} units</span>
+                    <span className="text-gray-500">KES {product.price.toLocaleString()}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Desktop Table View */}
+            <div className="hidden sm:block overflow-x-auto">
               <table className="min-w-full divide-y divide-gray-200">
                 <thead>
                   <tr>

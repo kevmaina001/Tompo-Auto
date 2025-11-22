@@ -231,13 +231,13 @@ export default function CategoriesPage() {
       </Dialog>
 
       {/* Categories Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {categories.map((category) => (
           <Card key={category._id}>
-            <CardHeader>
-              <CardTitle className="flex justify-between items-center">
-                <span>{category.name}</span>
-                <div className="flex gap-2">
+            <CardHeader className="pb-3">
+              <CardTitle className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+                <span className="text-base sm:text-lg truncate max-w-[180px] sm:max-w-none">{category.name}</span>
+                <div className="flex gap-2 flex-shrink-0">
                   <Button
                     variant="outline"
                     size="sm"
@@ -260,11 +260,11 @@ export default function CategoriesPage() {
                 <img
                   src={category.image}
                   alt={category.name}
-                  className="w-full h-40 object-cover rounded mb-2"
+                  className="w-full h-32 sm:h-40 object-cover rounded mb-2"
                 />
               )}
-              <p className="text-sm text-gray-600">{category.description}</p>
-              <p className="text-xs text-gray-400 mt-2">Slug: {category.slug}</p>
+              <p className="text-sm text-gray-600 line-clamp-2">{category.description}</p>
+              <p className="text-xs text-gray-400 mt-2 truncate">Slug: {category.slug}</p>
             </CardContent>
           </Card>
         ))}

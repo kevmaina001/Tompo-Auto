@@ -56,8 +56,8 @@ const BlogForm = memo(function BlogForm({
 
   return (
     <form onSubmit={onSubmit} className="space-y-4 max-h-[70vh] overflow-y-auto px-1">
-      <div className="grid grid-cols-2 gap-4">
-        <div className="col-span-2">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="sm:col-span-2">
           <Label htmlFor="title">Blog Title *</Label>
           <Input
             id="title"
@@ -69,7 +69,7 @@ const BlogForm = memo(function BlogForm({
           <p className="text-xs text-gray-500 mt-1">Enter the blog post title (not the image URL)</p>
         </div>
 
-        <div className="col-span-2">
+        <div className="sm:col-span-2">
           <Label htmlFor="slug">Slug (URL-friendly name)</Label>
           <Input
             id="slug"
@@ -80,7 +80,7 @@ const BlogForm = memo(function BlogForm({
           <p className="text-xs text-gray-500 mt-1">Leave empty to automatically generate from title. Example: understanding-car-aerodynamics</p>
         </div>
 
-        <div className="col-span-2">
+        <div className="sm:col-span-2">
           <Label htmlFor="excerpt">Excerpt</Label>
           <Textarea
             id="excerpt"
@@ -91,7 +91,7 @@ const BlogForm = memo(function BlogForm({
           />
         </div>
 
-        <div className="col-span-2">
+        <div className="sm:col-span-2">
           <Label htmlFor="content">Content *</Label>
           <Textarea
             id="content"
@@ -103,7 +103,7 @@ const BlogForm = memo(function BlogForm({
           />
         </div>
 
-        <div className="col-span-2">
+        <div className="sm:col-span-2">
           <Label>Featured Image</Label>
           <div className="space-y-4">
             <div className="border rounded-lg p-4">
@@ -129,7 +129,7 @@ const BlogForm = memo(function BlogForm({
           </div>
         </div>
 
-        <div className="col-span-2">
+        <div className="sm:col-span-2">
           <Label htmlFor="author">Author</Label>
           <Input
             id="author"
@@ -139,7 +139,7 @@ const BlogForm = memo(function BlogForm({
           />
         </div>
 
-        <div className="col-span-2">
+        <div className="sm:col-span-2">
           <div className="flex items-center space-x-2">
             <input
               type="checkbox"
@@ -322,78 +322,143 @@ export default function BlogPage() {
       </Dialog>
 
       <div className="bg-white shadow rounded-lg overflow-hidden">
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Title</TableHead>
-              <TableHead>Author</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead>Created</TableHead>
-              <TableHead className="text-right">Actions</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {blogPosts.map((post) => {
-              const createdDate = new Date(post.createdAt).toLocaleDateString();
-              return (
-                <TableRow key={post._id}>
-                  <TableCell>
-                    <div className="flex items-center">
-                      {post.image && (
-                        <img
-                          src={post.image}
-                          alt={post.title}
-                          className="w-12 h-12 rounded object-cover mr-3"
-                        />
-                      )}
-                      <div>
-                        <div className="font-medium">{post.title}</div>
-                        {post.excerpt && (
-                          <div className="text-xs text-gray-500 line-clamp-1">
-                            {post.excerpt}
-                          </div>
-                        )}
+        {/* Mobile Card View */}
+        <div className="sm:hidden divide-y">
+          {blogPosts.map((post) => {
+            const createdDate = new Date(post.createdAt).toLocaleDateString();
+            return (
+              <div key={post._id} className="p-4">
+                <div className="flex items-start gap-3">
+                  {post.image && (
+                    <img
+                      src={post.image}
+                      alt={post.title}
+                      className="w-16 h-16 rounded object-cover flex-shrink-0"
+                    />
+                  )}
+                  <div className="flex-1 min-w-0">
+                    <div className="font-medium text-sm truncate">{post.title}</div>
+                    {post.excerpt && (
+                      <div className="text-xs text-gray-500 line-clamp-2 mt-1">
+                        {post.excerpt}
                       </div>
-                    </div>
-                  </TableCell>
-                  <TableCell>{post.author || "—"}</TableCell>
-                  <TableCell>
-                    {post.published ? (
-                      <Badge className="bg-green-600">
-                        <Eye className="h-3 w-3 mr-1" />
-                        Published
-                      </Badge>
-                    ) : (
-                      <Badge variant="secondary">
-                        <EyeOff className="h-3 w-3 mr-1" />
-                        Draft
-                      </Badge>
                     )}
-                  </TableCell>
-                  <TableCell>{createdDate}</TableCell>
-                  <TableCell className="text-right">
-                    <div className="flex justify-end gap-2">
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => openEditDialog(post)}
-                      >
-                        <Edit className="h-4 w-4" />
-                      </Button>
-                      <Button
-                        variant="destructive"
-                        size="sm"
-                        onClick={() => handleDelete(post._id)}
-                      >
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
-                    </div>
-                  </TableCell>
-                </TableRow>
-              );
-            })}
-          </TableBody>
-        </Table>
+                  </div>
+                </div>
+                <div className="flex flex-wrap items-center gap-2 mt-3 text-xs">
+                  {post.published ? (
+                    <Badge className="bg-green-600 text-xs">
+                      <Eye className="h-3 w-3 mr-1" />
+                      Published
+                    </Badge>
+                  ) : (
+                    <Badge variant="secondary" className="text-xs">
+                      <EyeOff className="h-3 w-3 mr-1" />
+                      Draft
+                    </Badge>
+                  )}
+                  <span className="text-gray-500">{post.author || "No author"}</span>
+                  <span className="text-gray-400">•</span>
+                  <span className="text-gray-500">{createdDate}</span>
+                </div>
+                <div className="flex gap-2 mt-3">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="flex-1"
+                    onClick={() => openEditDialog(post)}
+                  >
+                    <Edit className="h-4 w-4 mr-1" /> Edit
+                  </Button>
+                  <Button
+                    variant="destructive"
+                    size="sm"
+                    className="flex-1"
+                    onClick={() => handleDelete(post._id)}
+                  >
+                    <Trash2 className="h-4 w-4 mr-1" /> Delete
+                  </Button>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Desktop Table View */}
+        <div className="hidden sm:block">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Title</TableHead>
+                <TableHead>Author</TableHead>
+                <TableHead>Status</TableHead>
+                <TableHead>Created</TableHead>
+                <TableHead className="text-right">Actions</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {blogPosts.map((post) => {
+                const createdDate = new Date(post.createdAt).toLocaleDateString();
+                return (
+                  <TableRow key={post._id}>
+                    <TableCell>
+                      <div className="flex items-center">
+                        {post.image && (
+                          <img
+                            src={post.image}
+                            alt={post.title}
+                            className="w-12 h-12 rounded object-cover mr-3"
+                          />
+                        )}
+                        <div>
+                          <div className="font-medium">{post.title}</div>
+                          {post.excerpt && (
+                            <div className="text-xs text-gray-500 line-clamp-1">
+                              {post.excerpt}
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </TableCell>
+                    <TableCell>{post.author || "—"}</TableCell>
+                    <TableCell>
+                      {post.published ? (
+                        <Badge className="bg-green-600">
+                          <Eye className="h-3 w-3 mr-1" />
+                          Published
+                        </Badge>
+                      ) : (
+                        <Badge variant="secondary">
+                          <EyeOff className="h-3 w-3 mr-1" />
+                          Draft
+                        </Badge>
+                      )}
+                    </TableCell>
+                    <TableCell>{createdDate}</TableCell>
+                    <TableCell className="text-right">
+                      <div className="flex justify-end gap-2">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => openEditDialog(post)}
+                        >
+                          <Edit className="h-4 w-4" />
+                        </Button>
+                        <Button
+                          variant="destructive"
+                          size="sm"
+                          onClick={() => handleDelete(post._id)}
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
+            </TableBody>
+          </Table>
+        </div>
 
         {blogPosts.length === 0 && (
           <div className="text-center py-12 text-gray-500">

@@ -64,8 +64,8 @@ const ProductForm = memo(function ProductForm({ onSubmit, submitLabel, formData,
 
   return (
     <form onSubmit={onSubmit} className="space-y-4 max-h-[70vh] overflow-y-auto px-1">
-      <div className="grid grid-cols-2 gap-4">
-        <div className="col-span-2">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="sm:col-span-2">
           <Label htmlFor="title">Product Title *</Label>
           <Input
             id="title"
@@ -123,7 +123,7 @@ const ProductForm = memo(function ProductForm({ onSubmit, submitLabel, formData,
           />
         </div>
 
-        <div className="col-span-2">
+        <div className="sm:col-span-2">
           <Label htmlFor="description">Description</Label>
           <Textarea
             id="description"
@@ -133,7 +133,7 @@ const ProductForm = memo(function ProductForm({ onSubmit, submitLabel, formData,
           />
         </div>
 
-        <div className="col-span-2">
+        <div className="sm:col-span-2">
           <Label>Product Images</Label>
           <div className="space-y-4">
             <div className="border rounded-lg p-4">
@@ -181,7 +181,7 @@ const ProductForm = memo(function ProductForm({ onSubmit, submitLabel, formData,
           />
         </div>
 
-        <div className="col-span-2">
+        <div className="sm:col-span-2">
           <Label htmlFor="compatibleModels">Compatible Models (comma-separated)</Label>
           <Textarea
             id="compatibleModels"
@@ -192,7 +192,7 @@ const ProductForm = memo(function ProductForm({ onSubmit, submitLabel, formData,
           />
         </div>
 
-        <div className="col-span-2">
+        <div className="sm:col-span-2">
           <div className="flex items-center space-x-2">
             <input
               type="checkbox"
@@ -381,75 +381,143 @@ export default function ProductsPage() {
       </Dialog>
 
       <div className="bg-white shadow rounded-lg overflow-hidden">
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Product</TableHead>
-              <TableHead>Category</TableHead>
-              <TableHead>Price</TableHead>
-              <TableHead>Stock</TableHead>
-              <TableHead>Views</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead className="text-right">Actions</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {products.map((product) => {
-              const category = categories.find((c) => c._id === product.categoryId);
-              return (
-                <TableRow key={product._id}>
-                  <TableCell>
-                    <div className="flex items-center">
-                      {product.images[0] && (
-                        <img
-                          src={product.images[0]}
-                          alt={product.title}
-                          className="w-10 h-10 rounded object-cover mr-3"
-                        />
-                      )}
-                      <div>
-                        <div className="font-medium">{product.title}</div>
-                        {product.brand && (
-                          <div className="text-xs text-gray-500">{product.brand}</div>
-                        )}
-                      </div>
+        {/* Mobile Card View */}
+        <div className="sm:hidden divide-y">
+          {products.map((product) => {
+            const category = categories.find((c) => c._id === product.categoryId);
+            return (
+              <div key={product._id} className="p-4">
+                <div className="flex items-start gap-3">
+                  {product.images[0] && (
+                    <img
+                      src={product.images[0]}
+                      alt={product.title}
+                      className="w-16 h-16 rounded object-cover flex-shrink-0"
+                    />
+                  )}
+                  <div className="flex-1 min-w-0">
+                    <div className="font-medium text-sm truncate">{product.title}</div>
+                    {product.brand && (
+                      <div className="text-xs text-gray-500">{product.brand}</div>
+                    )}
+                    <div className="text-xs text-gray-500 mt-1">{category?.name}</div>
+                    <div className="flex flex-wrap gap-1 mt-2">
+                      {product.featured && <Badge className="text-xs">Featured</Badge>}
+                      {product.stock === 0 && <Badge variant="destructive" className="text-xs">Out of Stock</Badge>}
                     </div>
-                  </TableCell>
-                  <TableCell>{category?.name}</TableCell>
-                  <TableCell>KES {product.price.toLocaleString()}</TableCell>
-                  <TableCell>
+                  </div>
+                </div>
+                <div className="grid grid-cols-3 gap-2 mt-3 text-sm">
+                  <div>
+                    <span className="text-gray-500 text-xs block">Price</span>
+                    <span className="font-medium">KES {product.price.toLocaleString()}</span>
+                  </div>
+                  <div>
+                    <span className="text-gray-500 text-xs block">Stock</span>
                     <span className={product.stock <= 10 ? "text-red-600 font-semibold" : ""}>
                       {product.stock}
                     </span>
-                  </TableCell>
-                  <TableCell>{product.views}</TableCell>
-                  <TableCell>
-                    {product.featured && <Badge className="mr-1">Featured</Badge>}
-                    {product.stock === 0 && <Badge variant="destructive">Out of Stock</Badge>}
-                  </TableCell>
-                  <TableCell className="text-right">
-                    <div className="flex justify-end gap-2">
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => openEditDialog(product)}
-                      >
-                        <Edit className="h-4 w-4" />
-                      </Button>
-                      <Button
-                        variant="destructive"
-                        size="sm"
-                        onClick={() => handleDelete(product._id)}
-                      >
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
-                    </div>
-                  </TableCell>
-                </TableRow>
-              );
-            })}
-          </TableBody>
-        </Table>
+                  </div>
+                  <div>
+                    <span className="text-gray-500 text-xs block">Views</span>
+                    <span>{product.views}</span>
+                  </div>
+                </div>
+                <div className="flex gap-2 mt-3">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="flex-1"
+                    onClick={() => openEditDialog(product)}
+                  >
+                    <Edit className="h-4 w-4 mr-1" /> Edit
+                  </Button>
+                  <Button
+                    variant="destructive"
+                    size="sm"
+                    className="flex-1"
+                    onClick={() => handleDelete(product._id)}
+                  >
+                    <Trash2 className="h-4 w-4 mr-1" /> Delete
+                  </Button>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Desktop Table View */}
+        <div className="hidden sm:block">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Product</TableHead>
+                <TableHead>Category</TableHead>
+                <TableHead>Price</TableHead>
+                <TableHead>Stock</TableHead>
+                <TableHead>Views</TableHead>
+                <TableHead>Status</TableHead>
+                <TableHead className="text-right">Actions</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {products.map((product) => {
+                const category = categories.find((c) => c._id === product.categoryId);
+                return (
+                  <TableRow key={product._id}>
+                    <TableCell>
+                      <div className="flex items-center">
+                        {product.images[0] && (
+                          <img
+                            src={product.images[0]}
+                            alt={product.title}
+                            className="w-10 h-10 rounded object-cover mr-3"
+                          />
+                        )}
+                        <div>
+                          <div className="font-medium">{product.title}</div>
+                          {product.brand && (
+                            <div className="text-xs text-gray-500">{product.brand}</div>
+                          )}
+                        </div>
+                      </div>
+                    </TableCell>
+                    <TableCell>{category?.name}</TableCell>
+                    <TableCell>KES {product.price.toLocaleString()}</TableCell>
+                    <TableCell>
+                      <span className={product.stock <= 10 ? "text-red-600 font-semibold" : ""}>
+                        {product.stock}
+                      </span>
+                    </TableCell>
+                    <TableCell>{product.views}</TableCell>
+                    <TableCell>
+                      {product.featured && <Badge className="mr-1">Featured</Badge>}
+                      {product.stock === 0 && <Badge variant="destructive">Out of Stock</Badge>}
+                    </TableCell>
+                    <TableCell className="text-right">
+                      <div className="flex justify-end gap-2">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => openEditDialog(product)}
+                        >
+                          <Edit className="h-4 w-4" />
+                        </Button>
+                        <Button
+                          variant="destructive"
+                          size="sm"
+                          onClick={() => handleDelete(product._id)}
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
+            </TableBody>
+          </Table>
+        </div>
 
         {products.length === 0 && (
           <div className="text-center py-12 text-gray-500">
