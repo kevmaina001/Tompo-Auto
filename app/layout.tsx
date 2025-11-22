@@ -46,7 +46,7 @@ export const metadata: Metadata = {
     description: "Kenya's trusted supplier of genuine auto spare parts. Quality parts for all vehicle makes. Fast delivery & instant WhatsApp quotes.",
     images: [
       {
-        url: "/og-image.jpg",
+        url: "/og-image.png",
         width: 1200,
         height: 630,
         alt: "Tompo's Auto Spare Parts - Quality Auto Parts in Kenya",
@@ -57,7 +57,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Tompo's Auto Spare Parts | Quality Auto Parts in Kenya",
     description: "Kenya's trusted supplier of genuine auto spare parts. Quality parts for all vehicle makes. Fast delivery & instant WhatsApp quotes.",
-    images: ["/og-image.jpg"],
+    images: ["/og-image.png"],
   },
   robots: {
     index: true,
@@ -71,11 +71,10 @@ export const metadata: Metadata = {
     },
   },
   icons: {
-    icon: "/favicon.ico",
-    shortcut: "/favicon-16x16.png",
-    apple: "/apple-touch-icon.png",
+    icon: "/logo.png",
+    shortcut: "/logo.png",
+    apple: "/logo.png",
   },
-  manifest: "/site.webmanifest",
   alternates: {
     canonical: "/",
   },
