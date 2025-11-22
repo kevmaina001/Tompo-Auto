@@ -8,6 +8,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://www.tomposauto.com"),
+  manifest: "/manifest.json",
   title: {
     default: "Tompo's Auto Spare Parts | Quality Auto Parts in Kenya",
     template: "%s | Tompo's Auto Spare Parts",
@@ -89,6 +90,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
+        {/* PWA Meta Tags */}
+        <meta name="theme-color" content="#2563eb" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <meta name="apple-mobile-web-app-title" content="Tompo's Auto" />
+        <meta name="mobile-web-app-capable" content="yes" />
+        <link rel="apple-touch-icon" href="/logo.png" />
+
         {/* JSON-LD Structured Data for Organization */}
         <script
           type="application/ld+json"
