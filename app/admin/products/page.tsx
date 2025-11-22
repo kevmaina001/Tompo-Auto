@@ -31,7 +31,6 @@ import {
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { FastMultiUpload } from "@/components/fast-multi-upload";
-import { BulkImageInput } from "@/components/bulk-image-input";
 import { Plus, Edit, Trash2 } from "lucide-react";
 import type { Id } from "@/convex/_generated/dataModel";
 
@@ -135,32 +134,15 @@ const ProductForm = memo(function ProductForm({ onSubmit, submitLabel, formData,
 
         <div className="sm:col-span-2">
           <Label>Product Images</Label>
-          <div className="space-y-4">
-            <div className="border rounded-lg p-4">
-              <h4 className="font-medium mb-2 text-sm">⚡ Upload Files (Fast Direct Upload)</h4>
-              <FastMultiUpload
-                currentImages={formData.images}
-                onUpdate={(urls) => handleFieldChange('images', urls)}
-                onRemove={(index) => {
-                  const newImages = formData.images.filter((_, i) => i !== index);
-                  handleFieldChange('images', newImages);
-                }}
-                maxFiles={5}
-              />
-            </div>
-
-            <div className="border rounded-lg p-4 bg-blue-50">
-              <h4 className="font-medium mb-2 text-sm">🔗 Or Paste URLs (For Bulk)</h4>
-              <BulkImageInput
-                currentImages={formData.images}
-                onUpdate={(urls) => handleFieldChange('images', urls)}
-                onRemove={(index) => {
-                  const newImages = formData.images.filter((_, i) => i !== index);
-                  handleFieldChange('images', newImages);
-                }}
-              />
-            </div>
-          </div>
+          <FastMultiUpload
+            currentImages={formData.images}
+            onUpdate={(urls) => handleFieldChange('images', urls)}
+            onRemove={(index) => {
+              const newImages = formData.images.filter((_, i) => i !== index);
+              handleFieldChange('images', newImages);
+            }}
+            maxFiles={5}
+          />
         </div>
 
         <div>

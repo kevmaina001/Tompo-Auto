@@ -105,28 +105,12 @@ const BlogForm = memo(function BlogForm({
 
         <div className="sm:col-span-2">
           <Label>Featured Image</Label>
-          <div className="space-y-4">
-            <div className="border rounded-lg p-4">
-              <h4 className="font-medium mb-2 text-sm">⚡ Upload Image (Fast Direct Upload)</h4>
-              <FastMultiUpload
-                currentImages={formData.image ? [formData.image] : []}
-                onUpdate={(urls) => handleFieldChange('image', urls[0] || '')}
-                onRemove={() => handleFieldChange('image', '')}
-                maxFiles={1}
-              />
-            </div>
-
-            <div className="border rounded-lg p-4 bg-blue-50">
-              <h4 className="font-medium mb-2 text-sm">🔗 Or Paste Image URL</h4>
-              <Input
-                id="image"
-                type="url"
-                value={formData.image}
-                onChange={(e) => handleFieldChange('image', e.target.value)}
-                placeholder="https://example.com/image.jpg"
-              />
-            </div>
-          </div>
+          <FastMultiUpload
+            currentImages={formData.image ? [formData.image] : []}
+            onUpdate={(urls) => handleFieldChange('image', urls[0] || '')}
+            onRemove={() => handleFieldChange('image', '')}
+            maxFiles={1}
+          />
         </div>
 
         <div className="sm:col-span-2">
