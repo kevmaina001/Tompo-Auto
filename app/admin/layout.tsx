@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { UserButton } from "@clerk/nextjs";
 import {
   LayoutDashboard,
   FolderTree,
@@ -93,10 +94,15 @@ export default function AdminLayout({
               </div>
             </div>
 
-            <div className="flex items-center">
-              <div className="text-[10px] sm:text-xs text-gray-500 px-2 sm:px-3 py-1 bg-yellow-100 rounded">
-                Dev Mode
-              </div>
+            <div className="flex items-center gap-2 sm:gap-3">
+              <UserButton
+                afterSignOutUrl="/"
+                appearance={{
+                  elements: {
+                    avatarBox: "h-8 w-8 sm:h-9 sm:w-9",
+                  },
+                }}
+              />
             </div>
           </div>
         </div>
