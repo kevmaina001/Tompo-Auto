@@ -7,6 +7,7 @@ import { useCart } from "@/lib/cart-context";
 import { Button } from "./ui/button";
 import { Badge } from "./ui/badge";
 import { SearchModal } from "./search-modal";
+import { InstallAppButton } from "./pwa-install-prompt";
 
 export function Navbar() {
   const { totalItems } = useCart();
@@ -108,6 +109,8 @@ export function Navbar() {
                 </Button>
               </Link>
 
+              <InstallAppButton className="text-gray-700 hover:text-blue-600 hover:border-blue-300" />
+
               <Link href="/cart">
                 <Button
                   variant="default"
@@ -203,6 +206,9 @@ export function Navbar() {
               >
                 Contact
               </Link>
+              <div className="px-4 pt-2">
+                <InstallAppButton className="w-full justify-center" />
+              </div>
             </div>
           </div>
         )}
