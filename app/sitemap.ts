@@ -1,14 +1,9 @@
 import { MetadataRoute } from "next";
-import { ConvexHttpClient } from "convex/browser";
-import { api } from "@/convex/_generated/api";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://www.tomposauto.com";
 
-  // Initialize Convex HTTP client for server-side fetching
-  const convex = new ConvexHttpClient(process.env.NEXT_PUBLIC_CONVEX_URL!);
-
-  // Static pages
+  // Static pages - always included
   const staticPages: MetadataRoute.Sitemap = [
     {
       url: baseUrl,
@@ -42,42 +37,52 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
   ];
 
-  // Dynamic pages - fetch from database
-  let productPages: MetadataRoute.Sitemap = [];
-  let categoryPages: MetadataRoute.Sitemap = [];
-  let blogPages: MetadataRoute.Sitemap = [];
+  // Dynamic pages - fetch from database if Convex URL is available
+  let dynamicPages: MetadataRoute.Sitemap = [];
 
-  try {
-    // Fetch all products
-    const products = await convex.query(api.products.list);
-    productPages = products.map((product) => ({
-      url: `${baseUrl}/products/${product.slug}`,
-      lastModified: new Date(product.updatedAt || product.createdAt),
-      changeFrequency: "weekly" as const,
-      priority: 0.7,
-    }));
+  const convexUrl = process.env.NEXT_PUBLIC_CONVEX_URL;
 
-    // Fetch all categories
-    const categories = await convex.query(api.categories.list);
-    categoryPages = categories.map((category) => ({
-      url: `${baseUrl}/categories/${category.slug}`,
-      lastModified: new Date(),
-      changeFrequency: "weekly" as const,
-      priority: 0.8,
-    }));
+  if (convexUrl) {
+    try {
+      // Dynamically import to avoid build-time issues
+      const { ConvexHttpClient } = await import("convex/browser");
+      const { api } = await import("@/convex/_generated/api");
 
-    // Fetch all published blog posts
-    const blogPosts = await convex.query(api.blogPosts.listPublished);
-    blogPages = blogPosts.map((post) => ({
-      url: `${baseUrl}/blog/${post.slug}`,
-      lastModified: new Date(post.updatedAt),
-      changeFrequency: "monthly" as const,
-      priority: 0.6,
-    }));
-  } catch (error) {
-    // Log error but don't fail sitemap generation
-    console.error("Error fetching dynamic sitemap data:", error);
+      const convex = new ConvexHttpClient(convexUrl);
+
+      // Fetch all products
+      const products = await convex.query(api.products.list);
+      const productPages = products.map((product: { slug: string; updatedAt?: number; createdAt: number }) => ({
+        url: `${baseUrl}/products/${product.slug}`,
+        lastModified: new Date(product.updatedAt || product.createdAt),
+        changeFrequency: "weekly" as const,
+        priority: 0.7,
+      }));
+
+      // Fetch all categories
+      const categories = await convex.query(api.categories.list);
+      const categoryPages = categories.map((category: { slug: string }) => ({
+        url: `${baseUrl}/categories/${category.slug}`,
+        lastModified: new Date(),
+        changeFrequency: "weekly" as const,
+        priority: 0.8,
+      }));
+
+      // Fetch all published blog posts
+      const blogPosts = await convex.query(api.blogPosts.listPublished);
+      const blogPages = blogPosts.map((post: { slug: string; updatedAt: number }) => ({
+        url: `${baseUrl}/blog/${post.slug}`,
+        lastModified: new Date(post.updatedAt),
+        changeFrequency: "monthly" as const,
+        priority: 0.6,
+      }));
+
+      dynamicPages = [...categoryPages, ...productPages, ...blogPages];
+    } catch (error) {
+      // Log error but don't fail sitemap generation
+      console.error("Error fetching dynamic sitemap data:", error);
+    }
   }
 
-  return [...staticPages, ...categoryPages, ...productPages, ...blogPages];
+  return [...staticPages, ...dynamicPages];
 }
