@@ -13,6 +13,56 @@ interface FastCloudinaryUploadProps {
   multiple?: boolean;
 }
 
+// Resize image to reduce upload time - max 1200px, 0.7 quality
+const resizeImage = (file: File): Promise<Blob> => {
+  return new Promise((resolve) => {
+    // If not an image or small enough, return original
+    if (!file.type.startsWith('image/') || file.size < 100000) {
+      resolve(file);
+      return;
+    }
+
+    const img = new Image();
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+
+    img.onload = () => {
+      URL.revokeObjectURL(img.src);
+
+      const maxSize = 1200;
+      let { width, height } = img;
+
+      // Only resize if larger than maxSize
+      if (width > maxSize || height > maxSize) {
+        if (width > height) {
+          height = (height / width) * maxSize;
+          width = maxSize;
+        } else {
+          width = (width / height) * maxSize;
+          height = maxSize;
+        }
+      }
+
+      canvas.width = width;
+      canvas.height = height;
+      ctx?.drawImage(img, 0, 0, width, height);
+
+      canvas.toBlob(
+        (blob) => resolve(blob || file),
+        'image/jpeg',
+        0.7
+      );
+    };
+
+    img.onerror = () => {
+      URL.revokeObjectURL(img.src);
+      resolve(file); // Fallback to original on error
+    };
+
+    img.src = URL.createObjectURL(file);
+  });
+};
+
 export function FastCloudinaryUpload({
   onUpload,
   currentImages = [],
@@ -24,9 +74,12 @@ export function FastCloudinaryUpload({
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const uploadFile = async (file: File) => {
+    // Resize image before upload for faster uploads
+    const resizedBlob = await resizeImage(file);
+
     // Create form data
     const formData = new FormData();
-    formData.append("file", file);
+    formData.append("file", resizedBlob, file.name);
     formData.append("upload_preset", process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET || "");
     formData.append("folder", "auto-spares");
 
