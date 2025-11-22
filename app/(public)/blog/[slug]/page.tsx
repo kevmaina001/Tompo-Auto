@@ -15,6 +15,13 @@ export default function BlogPostPage() {
 
   const blogPost = useQuery(api.blogPosts.getBySlug, { slug });
 
+  // Update page title for SEO - must be before any early returns
+  useEffect(() => {
+    if (blogPost) {
+      document.title = `${blogPost.title} | Tompo's Auto Blog`;
+    }
+  }, [blogPost?.title]);
+
   if (blogPost === undefined) {
     return (
       <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white flex items-center justify-center">
@@ -71,11 +78,6 @@ export default function BlogPostPage() {
         month: "long",
         day: "numeric",
       });
-
-  // Update page title for SEO
-  useEffect(() => {
-    document.title = `${blogPost.title} | Tompo's Auto Blog`;
-  }, [blogPost.title]);
 
   // JSON-LD structured data for the blog article
   const articleJsonLd = {

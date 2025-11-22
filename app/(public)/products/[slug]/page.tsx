@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import Link from "next/link";
-import Head from "next/head";
 import { ShoppingCart, ArrowLeft, Plus, Minus } from "lucide-react";
 import { useCart } from "@/lib/cart-context";
 import { useParams } from "next/navigation";
