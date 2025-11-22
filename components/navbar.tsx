@@ -2,8 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { ShoppingCart, Phone, Mail, Menu, X } from "lucide-react";
-import Image from "next/image";
+import { ShoppingCart, Phone, Mail, Wrench, Menu, X } from "lucide-react";
 import { useCart } from "@/lib/cart-context";
 import { Button } from "./ui/button";
 import { Badge } from "./ui/badge";
@@ -41,15 +40,18 @@ export function Navbar() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16 sm:h-20">
             <div className="flex items-center">
-              <Link href="/" className="flex items-center group">
-                <Image
-                  src="/logo.png"
-                  alt="Tompo's Auto - Where Quality Meets Experience"
-                  width={160}
-                  height={60}
-                  className="h-12 sm:h-14 md:h-16 w-auto group-hover:scale-105 transition-transform"
-                  priority
-                />
+              <Link href="/" className="flex items-center space-x-2 sm:space-x-3 group">
+                <div className="bg-gradient-to-br from-blue-600 to-blue-800 p-1.5 sm:p-2.5 rounded-lg group-hover:scale-105 transition-transform">
+                  <Wrench className="h-5 w-5 sm:h-7 sm:w-7 text-white" />
+                </div>
+                <div>
+                  <div className="text-base sm:text-xl md:text-2xl font-bold bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent">
+                    {"Tompo's Auto"}
+                  </div>
+                  <div className="text-[10px] sm:text-xs text-gray-500 leading-tight hidden sm:block">
+                    Where quality<br />Meets Experience
+                  </div>
+                </div>
               </Link>
             </div>
 
