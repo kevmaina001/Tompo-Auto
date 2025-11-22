@@ -101,7 +101,7 @@ export default function RootLayout({
               url: process.env.NEXT_PUBLIC_SITE_URL || "https://www.tomposauto.com",
               logo: `${process.env.NEXT_PUBLIC_SITE_URL || "https://www.tomposauto.com"}/logo.png`,
               image: `${process.env.NEXT_PUBLIC_SITE_URL || "https://www.tomposauto.com"}/og-image.jpg`,
-              telephone: "+254708328905",
+              telephone: "+254746198858",
               email: "info@tomposauto.com",
               address: {
                 "@type": "PostalAddress",
@@ -134,7 +134,7 @@ export default function RootLayout({
                 name: "Kenya",
               },
               sameAs: [
-                "https://wa.me/254708328905",
+                "https://wa.me/254746198858",
               ],
             }),
           }}

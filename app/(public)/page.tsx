@@ -138,7 +138,7 @@ export default function HomePage() {
 
                   {/* WhatsApp CTA */}
                   <a
-                    href={`https://wa.me/254708328905?text=${encodeURIComponent("Hi! I'm interested in your auto spare parts.")}`}
+                    href={`https://wa.me/254746198858?text=${encodeURIComponent("Hi! I'm interested in your auto spare parts.")}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="mt-6 flex items-center justify-center bg-gradient-to-r from-green-500 to-green-600 text-white font-bold py-4 px-6 rounded-2xl shadow-lg hover:shadow-green-500/50 hover:scale-105 transition-all duration-300 group"

@@ -32,9 +32,9 @@ export function Navbar() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center text-xs sm:text-sm">
             <div className="flex items-center space-x-3 sm:space-x-6">
-              <a href="tel:+254708328905" className="flex items-center hover:text-blue-300 transition">
+              <a href="tel:+254746198858" className="flex items-center hover:text-blue-300 transition">
                 <Phone className="h-3 w-3 mr-1" />
-                <span className="hidden sm:inline">+254 708 328 905</span>
+                <span className="hidden sm:inline">+254 746 198 858</span>
                 <span className="sm:hidden">Call</span>
               </a>
               <a href="mailto:info@autospares.com" className="hidden md:flex items-center hover:text-blue-300 transition">
