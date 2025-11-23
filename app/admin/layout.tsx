@@ -14,6 +14,7 @@ import {
   Menu,
   X,
 } from "lucide-react";
+import { AdminGuard } from "@/components/admin-guard";
 
 const navItems = [
   { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
@@ -39,6 +40,7 @@ export default function AdminLayout({
   };
 
   return (
+    <AdminGuard>
     <div className="min-h-screen bg-gray-50">
       {/* Top Navigation */}
       <nav className="bg-white border-b sticky top-0 z-40">
@@ -169,5 +171,6 @@ export default function AdminLayout({
         {children}
       </main>
     </div>
+    </AdminGuard>
   );
 }
