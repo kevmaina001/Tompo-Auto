@@ -154,13 +154,20 @@ export function PWAInstallPrompt() {
   );
 }
 
-// Separate component for install button in navbar
+// Separate component for install button in navbar - always visible
 export function InstallAppButton({ className = "" }: { className?: string }) {
   const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
   const [isInstalled, setIsInstalled] = useState(false);
   const [installing, setInstalling] = useState(false);
+  const [canShow, setCanShow] = useState(false);
 
   useEffect(() => {
+    // Check if we should show the button at all
+    // Show on mobile/tablet or desktop Chrome/Edge
+    const isMobileOrTablet = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+    const isChromium = /Chrome|Chromium|Edge/i.test(navigator.userAgent);
+    setCanShow(isMobileOrTablet || isChromium);
+
     if (isStandalone()) {
       setIsInstalled(true);
       return;
@@ -186,7 +193,11 @@ export function InstallAppButton({ className = "" }: { className?: string }) {
   }, []);
 
   const handleInstall = async () => {
-    if (!deferredPrompt) return;
+    if (!deferredPrompt) {
+      // If no prompt available yet, show alert
+      alert("To install: Open browser menu (⋮) and tap 'Install app' or 'Add to Home screen'");
+      return;
+    }
 
     setInstalling(true);
     await deferredPrompt.prompt();
@@ -199,8 +210,8 @@ export function InstallAppButton({ className = "" }: { className?: string }) {
     setInstalling(false);
   };
 
-  // Only show if install prompt is available
-  if (isInstalled || !deferredPrompt) return null;
+  // Don't show if installed or not a supported browser
+  if (isInstalled || !canShow) return null;
 
   return (
     <Button
