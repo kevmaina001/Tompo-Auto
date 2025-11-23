@@ -61,6 +61,11 @@ export default function PublicLayout({
                     Enquiry Cart
                   </Link>
                 </li>
+                <li>
+                  <Link href="/admin" className="text-gray-400 hover:text-white transition-colors">
+                    Admin
+                  </Link>
+                </li>
               </ul>
             </div>
 
