@@ -1,0 +1,26 @@
+{
+  "name": "Tompo's Auto Admin",
+  "short_name": "Tompo's Admin",
+  "description": "Admin panel for Tompo's Auto Spare Parts - Manage products, orders, and inventory.",
+  "start_url": "/admin",
+  "display": "standalone",
+  "background_color": "#1f2937",
+  "theme_color": "#1f2937",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "icons": [
+    {
+      "src": "/logo.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable any"
+    }
+  ],
+  "categories": ["business", "productivity"]
+}
