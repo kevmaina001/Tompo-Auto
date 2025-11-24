@@ -63,7 +63,7 @@ export default function PublicLayout({
                 </li>
                 <li>
                   <Link href="/admin" className="text-gray-400 hover:text-white transition-colors">
-                    Admin
+                    Tompos
                   </Link>
                 </li>
               </ul>
@@ -113,7 +113,18 @@ export default function PublicLayout({
               <p className="mb-2 sm:mb-0">
                 © {new Date().getFullYear()} {"Tompo's Auto Spare Parts. All rights reserved."}
               </p>
-              <div className="flex space-x-4">
+              <div className="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-4">
+                <span>
+                  Developed by{" "}
+                  <a
+                    href="https://kevmaina001.github.io/myportfolio1/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-400 hover:text-blue-300 transition-colors"
+                  >
+                    Kelvin
+                  </a>
+                </span>
                 <a href="#" className="hover:text-white transition-colors">Privacy Policy</a>
                 <a href="#" className="hover:text-white transition-colors">Terms of Service</a>
               </div>
