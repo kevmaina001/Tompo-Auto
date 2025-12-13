@@ -1,26 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  async headers() {
-    // Only add noindex header on preview deployments, not production
-    const isProduction = process.env.VERCEL_ENV === 'production';
-
-    if (isProduction) {
-      return [];
-    }
-
-    // For preview/development, add noindex
-    return [
-      {
-        source: '/:path*',
-        headers: [
-          {
-            key: 'X-Robots-Tag',
-            value: 'noindex, nofollow',
-          },
-        ],
-      },
-    ];
-  },
+  // Removed headers configuration to prevent any noindex headers
+  // Vercel will handle preview deployment indexing automatically
 };
 
 export default nextConfig;
