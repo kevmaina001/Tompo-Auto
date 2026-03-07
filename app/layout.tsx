@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import Script from "next/script";
 import "./globals.css";
 import { Providers } from "@/lib/providers";
 
@@ -153,10 +152,6 @@ export default function RootLayout({
         />
       </head>
       <body className={inter.className}>
-        <Script
-          src="https://upload-widget.cloudinary.com/global/all.js"
-          strategy="beforeInteractive"
-        />
         <Providers>{children}</Providers>
       </body>
     </html>
