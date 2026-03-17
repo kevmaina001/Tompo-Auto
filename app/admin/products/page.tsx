@@ -75,12 +75,13 @@ const ProductForm = memo(function ProductForm({ onSubmit, submitLabel, formData,
         </div>
 
         <div>
-          <Label htmlFor="slug">Slug</Label>
+          <Label htmlFor="slug">Slug (auto-generated)</Label>
           <Input
             id="slug"
             value={formData.slug}
-            onChange={(e) => handleFieldChange('slug', e.target.value)}
-            placeholder="Auto-generated"
+            readOnly
+            className="bg-gray-100 cursor-not-allowed text-gray-500"
+            placeholder="Auto-generated on save"
           />
         </div>
 

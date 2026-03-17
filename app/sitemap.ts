@@ -46,21 +46,25 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
       // Fetch all products
       const products = await convex.query(api.products.list);
-      const productPages = products.map((product: { slug: string; updatedAt?: number; createdAt: number }) => ({
-        url: `${baseUrl}/products/${product.slug}`,
-        lastModified: new Date(product.updatedAt || product.createdAt),
-        changeFrequency: "weekly" as const,
-        priority: 0.7,
-      }));
+      const productPages = products
+        .filter((product: { slug: string }) => product.slug && product.slug === product.slug.trim() && !product.slug.endsWith("-"))
+        .map((product: { slug: string; updatedAt?: number; createdAt: number }) => ({
+          url: `${baseUrl}/products/${product.slug}`,
+          lastModified: new Date(product.updatedAt || product.createdAt),
+          changeFrequency: "weekly" as const,
+          priority: 0.7,
+        }));
 
       // Fetch all categories
       const categories = await convex.query(api.categories.list);
-      const categoryPages = categories.map((category: { slug: string }) => ({
-        url: `${baseUrl}/categories/${category.slug}`,
-        lastModified: new Date(),
-        changeFrequency: "weekly" as const,
-        priority: 0.8,
-      }));
+      const categoryPages = categories
+        .filter((category: { slug: string }) => category.slug && category.slug === category.slug.trim() && !category.slug.endsWith("-"))
+        .map((category: { slug: string }) => ({
+          url: `${baseUrl}/categories/${category.slug}`,
+          lastModified: new Date(),
+          changeFrequency: "weekly" as const,
+          priority: 0.8,
+        }));
 
       // Fetch all published blog posts
       const blogPosts = await convex.query(api.blogPosts.listPublished);
