@@ -41,7 +41,7 @@ export default function CategoriesPage() {
     try {
       await createCategory({
         name: formData.name,
-        slug: formData.slug || formData.name.toLowerCase().replace(/\s+/g, "-"),
+        slug: formData.slug || formData.name.toLowerCase().trim().replace(/\s+/g, "-").replace(/^-+|-+$/g, ""),
         image: formData.image || undefined,
         description: formData.description || undefined,
       });

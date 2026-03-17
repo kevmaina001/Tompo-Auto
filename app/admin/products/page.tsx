@@ -241,7 +241,7 @@ export default function ProductsPage() {
     try {
       await createProduct({
         title: formData.title,
-        slug: formData.slug || formData.title.toLowerCase().replace(/\s+/g, "-"),
+        slug: formData.slug || formData.title.toLowerCase().trim().replace(/\s+/g, "-").replace(/^-+|-+$/g, ""),
         categoryId: formData.categoryId as Id<"categories">,
         price: parseFloat(formData.price),
         stock: parseInt(formData.stock),
