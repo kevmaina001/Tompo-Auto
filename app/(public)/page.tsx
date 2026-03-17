@@ -1,4 +1,6 @@
 import { Metadata } from "next";
+import { fetchQuery } from "convex/nextjs";
+import { api } from "@/convex/_generated/api";
 import HomeClient from "./HomeClient";
 
 export const metadata: Metadata = {
@@ -11,6 +13,11 @@ export const metadata: Metadata = {
   },
 };
 
-export default function HomePage() {
-  return <HomeClient />;
+export default async function HomePage() {
+  const [categories, featuredProducts] = await Promise.all([
+    fetchQuery(api.categories.list),
+    fetchQuery(api.products.getFeatured, { limit: 8 }),
+  ]);
+
+  return <HomeClient categories={categories} featuredProducts={featuredProducts} />;
 }

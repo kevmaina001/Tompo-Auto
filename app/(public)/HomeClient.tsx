@@ -1,7 +1,6 @@
 "use client";
 
-import { useQuery } from "convex/react";
-import { api } from "@/convex/_generated/api";
+import { Doc } from "@/convex/_generated/dataModel";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -9,12 +8,15 @@ import Link from "next/link";
 import { ShoppingCart, Search, CheckCircle, Clock, Shield, TrendingUp, ArrowRight, Star, Phone } from "lucide-react";
 import { useCart } from "@/lib/cart-context";
 
-export default function HomeClient() {
-  const categories = useQuery(api.categories.list);
-  const featuredProducts = useQuery(api.products.getFeatured, { limit: 8 });
+interface HomeClientProps {
+  categories: Doc<"categories">[];
+  featuredProducts: Doc<"products">[];
+}
+
+export default function HomeClient({ categories, featuredProducts }: HomeClientProps) {
   const { addItem } = useCart();
 
-  const handleAddToCart = (product: NonNullable<typeof featuredProducts>[number]) => {
+  const handleAddToCart = (product: Doc<"products">) => {
     addItem({
       productId: product._id,
       title: product.title,
@@ -194,12 +196,7 @@ export default function HomeClient() {
           </p>
         </div>
 
-        {!categories ? (
-          <div className="text-center py-12">
-            <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
-            <p className="mt-4 text-gray-600">Loading categories...</p>
-          </div>
-        ) : (
+        {(
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
             {categories.map((category) => (
               <Link
@@ -236,7 +233,7 @@ export default function HomeClient() {
           </div>
         )}
 
-        {categories && categories.length === 0 && (
+        {categories.length === 0 && (
           <div className="text-center py-12 bg-gray-50 rounded-lg">
             <Search className="h-16 w-16 text-gray-400 mx-auto mb-4" />
             <p className="text-gray-500 text-lg">No categories available yet.</p>
@@ -254,12 +251,7 @@ export default function HomeClient() {
             </p>
           </div>
 
-          {!featuredProducts ? (
-            <div className="text-center py-12">
-              <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
-              <p className="mt-4 text-gray-600">Loading featured products...</p>
-            </div>
-          ) : (
+          {(
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
               {featuredProducts.map((product) => (
                 <Card
@@ -340,7 +332,7 @@ export default function HomeClient() {
             </div>
           )}
 
-          {featuredProducts && featuredProducts.length === 0 && (
+          {featuredProducts.length === 0 && (
             <div className="text-center py-12 bg-white rounded-lg border-2 border-dashed">
               <Search className="h-16 w-16 text-gray-400 mx-auto mb-4" />
               <p className="text-gray-500 text-lg">No featured products available yet.</p>
