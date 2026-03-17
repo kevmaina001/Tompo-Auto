@@ -10,6 +10,9 @@ export const metadata: Metadata = {
     description: "Your trusted partner for quality automotive parts in Kenya. Learn about our mission, vision, and commitment to excellence.",
     type: "website",
   },
+  alternates: {
+    canonical: "/about",
+  },
 };
 
 export default function AboutPage() {

@@ -78,9 +78,6 @@ export const metadata: Metadata = {
     shortcut: "/logo.png",
     apple: "/logo.png",
   },
-  alternates: {
-    canonical: "/",
-  },
   category: "automotive",
 };
 

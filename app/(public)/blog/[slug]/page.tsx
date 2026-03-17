@@ -16,7 +16,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   }
 
   return {
-    title: `${blogPost.title} | Tompo's Auto Blog`,
+    title: blogPost.title,
     description: blogPost.excerpt || blogPost.content.substring(0, 160),
     openGraph: {
       title: blogPost.title,

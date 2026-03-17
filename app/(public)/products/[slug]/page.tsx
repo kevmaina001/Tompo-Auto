@@ -9,13 +9,13 @@ export async function generateMetadata({ params }: { params: { slug: string } })
 
   if (!product) {
     return {
-      title: "Product Not Found | Tompo's Auto Spare Parts",
+      title: "Product Not Found",
       description: "The requested auto spare part could not be found.",
     };
   }
 
   return {
-    title: `${product.title} | Tompo's Auto Spare Parts`,
+    title: product.title,
     description: product.description || `Buy ${product.title} - Quality auto spare part available at Tompo's Auto`,
     openGraph: {
       title: product.title,
