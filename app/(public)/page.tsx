@@ -3,6 +3,8 @@ import { fetchQuery } from "convex/nextjs";
 import { api } from "@/convex/_generated/api";
 import HomeClient from "./HomeClient";
 
+export const revalidate = 3600;
+
 export const metadata: Metadata = {
   title: {
     absolute: "Tompo's Auto Spare Parts | Quality Auto Parts in Kenya",

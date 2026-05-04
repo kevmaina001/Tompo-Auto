@@ -4,6 +4,8 @@ import { Metadata } from "next";
 import Link from "next/link";
 import { Calendar, User, ArrowRight } from "lucide-react";
 
+export const revalidate = 3600;
+
 export const metadata: Metadata = {
   title: "Blog - Automotive Tips & Guides",
   description: "Tips, guides, and insights about automotive maintenance, car parts, and vehicle care from Tompo's Auto Spare Parts.",

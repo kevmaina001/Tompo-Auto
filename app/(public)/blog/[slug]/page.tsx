@@ -5,6 +5,13 @@ import { Metadata } from "next";
 import Link from "next/link";
 import { Calendar, User, ArrowLeft } from "lucide-react";
 
+export const revalidate = 86400;
+
+export async function generateStaticParams() {
+  const posts = await fetchQuery(api.blogPosts.listPublished);
+  return posts.map((p) => ({ slug: p.slug }));
+}
+
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
   const blogPost = await fetchQuery(api.blogPosts.getBySlug, { slug: params.slug });
 

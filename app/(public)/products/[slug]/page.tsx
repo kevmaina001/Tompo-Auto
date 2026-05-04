@@ -4,6 +4,15 @@ import { notFound } from "next/navigation";
 import { Metadata } from "next";
 import ProductClient from "./ProductClient";
 
+export const revalidate = 3600;
+
+export async function generateStaticParams() {
+  const products = await fetchQuery(api.products.list);
+  return products
+    .filter((p) => p.slug && p.slug === p.slug.trim() && !p.slug.endsWith("-"))
+    .map((p) => ({ slug: p.slug }));
+}
+
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
   const product = await fetchQuery(api.products.getBySlug, { slug: params.slug });
 
