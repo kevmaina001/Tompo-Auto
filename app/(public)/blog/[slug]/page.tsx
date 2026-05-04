@@ -5,6 +5,7 @@ import { Metadata } from "next";
 import Link from "next/link";
 import { Calendar, User, ArrowLeft } from "lucide-react";
 
+export const dynamic = "force-static";
 export const revalidate = 86400;
 
 export async function generateStaticParams() {

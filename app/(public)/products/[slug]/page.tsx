@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { Metadata } from "next";
 import ProductClient from "./ProductClient";
 
+export const dynamic = "force-static";
 export const revalidate = 3600;
 
 export async function generateStaticParams() {

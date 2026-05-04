@@ -3,6 +3,7 @@ import { fetchQuery } from "convex/nextjs";
 import { api } from "@/convex/_generated/api";
 import HomeClient from "./HomeClient";
 
+export const dynamic = "force-static";
 export const revalidate = 3600;
 
 export const metadata: Metadata = {
