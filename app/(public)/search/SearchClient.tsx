@@ -359,7 +359,7 @@ function SearchPageContent() {
                 {searchResults.map((product) => (
                   <Card
                     key={product._id}
-                    className="hover:shadow-lg transition-shadow"
+                    className="hover:shadow-lg transition-all active:scale-[0.98]"
                   >
                     <Link href={`/products/${product.slug}`}>
                       {product.images[0] && (

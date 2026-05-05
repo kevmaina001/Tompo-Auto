@@ -68,7 +68,7 @@ export default function CategoryClient({ category, products }: CategoryClientPro
 
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
           {products.map((product) => (
-            <Card key={product._id} className="hover:shadow-lg transition-shadow">
+            <Card key={product._id} className="hover:shadow-lg transition-all active:scale-[0.98]">
               <Link href={`/products/${product.slug}`}>
                 {product.images[0] && (
                   <div className="aspect-square w-full overflow-hidden rounded-t-lg">

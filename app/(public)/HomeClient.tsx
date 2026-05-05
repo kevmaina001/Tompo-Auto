@@ -28,7 +28,7 @@ export default function HomeClient({ categories, featuredProducts }: HomeClientP
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-blue-700 via-blue-600 to-indigo-800 overflow-hidden min-h-[400px] md:min-h-[600px] flex items-center">
+      <section className="relative bg-gradient-to-br from-blue-700 via-blue-600 to-indigo-800 overflow-hidden min-h-[480px] md:min-h-[600px] flex items-center">
         {/* Animated Background Pattern */}
         <div className="absolute inset-0 bg-black opacity-10" />
         <div className="absolute inset-0" aria-hidden="true">
@@ -62,10 +62,10 @@ export default function HomeClient({ categories, featuredProducts }: HomeClientP
                 </p>
               </div>
 
-              <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center lg:justify-start">
                 <Link
                   href="#categories"
-                  className="group inline-flex items-center justify-center bg-white text-blue-700 hover:bg-yellow-300 hover:text-blue-900 font-bold shadow-2xl px-8 py-4 text-lg rounded-xl transition-all duration-300 transform hover:scale-105 hover:shadow-yellow-300/50"
+                  className="group inline-flex items-center justify-center bg-white text-blue-700 hover:bg-yellow-300 hover:text-blue-900 font-bold shadow-2xl px-6 sm:px-8 py-3.5 sm:py-4 text-base sm:text-lg rounded-xl transition-all duration-300 transform hover:scale-105 active:scale-95 hover:shadow-yellow-300/50"
                 >
                   <Search className="mr-2 h-5 w-5 group-hover:rotate-12 transition-transform" />
                   Browse Categories
@@ -74,12 +74,24 @@ export default function HomeClient({ categories, featuredProducts }: HomeClientP
 
                 <Link
                   href="#featured"
-                  className="group inline-flex items-center justify-center bg-transparent border-2 border-white text-white hover:bg-white hover:text-blue-700 font-bold px-8 py-4 text-lg rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-white/50"
+                  className="group inline-flex items-center justify-center bg-transparent border-2 border-white text-white hover:bg-white hover:text-blue-700 font-bold px-6 sm:px-8 py-3.5 sm:py-4 text-base sm:text-lg rounded-xl transition-all duration-300 transform hover:scale-105 active:scale-95 shadow-lg hover:shadow-white/50"
                 >
                   <Star className="mr-2 h-5 w-5 group-hover:fill-current transition-all" />
                   Featured Products
                 </Link>
               </div>
+
+              {/* Mobile-only WhatsApp CTA — desktop has it inside the floating cards on the right */}
+              <a
+                href={`https://wa.me/254746198858?text=${encodeURIComponent("Hi! I'm interested in your auto spare parts.")}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="lg:hidden group inline-flex w-full sm:w-auto items-center justify-center bg-gradient-to-r from-green-500 to-green-600 text-white font-bold py-3.5 px-6 rounded-xl shadow-lg active:scale-95 transition-transform animate-attention-pulse"
+              >
+                <Phone className="mr-2 h-5 w-5 group-hover:rotate-12 transition-transform" />
+                Chat on WhatsApp
+                <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+              </a>
 
               {/* Stats */}
               <div className="grid grid-cols-3 gap-3 sm:gap-6 pt-6 sm:pt-8 border-t border-white/20">
@@ -171,13 +183,16 @@ export default function HomeClient({ categories, featuredProducts }: HomeClientP
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 md:py-16">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 md:gap-8">
           {[
-            { icon: Shield, title: "Authentic Parts", desc: "100% genuine products" },
-            { icon: TrendingUp, title: "Best Prices", desc: "Competitive market rates" },
-            { icon: Clock, title: "Fast Delivery", desc: "Quick order processing" },
-            { icon: CheckCircle, title: "Quality Assured", desc: "Tested & verified" }
+            { icon: Shield, title: "Authentic Parts", desc: "100% genuine products", delay: "0s" },
+            { icon: TrendingUp, title: "Best Prices", desc: "Competitive market rates", delay: "0.5s" },
+            { icon: Clock, title: "Fast Delivery", desc: "Quick order processing", delay: "1s" },
+            { icon: CheckCircle, title: "Quality Assured", desc: "Tested & verified", delay: "1.5s" }
           ].map((feature, idx) => (
-            <div key={idx} className="text-center group">
-              <div className="inline-flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl sm:rounded-2xl mb-2 sm:mb-3 md:mb-4 group-hover:scale-110 transition-transform shadow-lg">
+            <div key={idx} className="text-center group animate-fade-up" style={{ animationDelay: `${idx * 0.1}s` }}>
+              <div
+                className="inline-flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl sm:rounded-2xl mb-2 sm:mb-3 md:mb-4 group-hover:scale-110 transition-transform shadow-lg animate-float"
+                style={{ animationDelay: feature.delay }}
+              >
                 <feature.icon className="h-6 w-6 sm:h-7 sm:w-7 md:h-8 md:w-8 text-white" />
               </div>
               <h3 className="font-bold text-sm sm:text-base md:text-lg mb-1 sm:mb-2 text-gray-900">{feature.title}</h3>
@@ -204,7 +219,7 @@ export default function HomeClient({ categories, featuredProducts }: HomeClientP
                 href={`/categories/${category.slug}`}
                 className="group block"
               >
-                <Card className="h-full border-2 border-transparent hover:border-blue-500 hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
+                <Card className="h-full border-2 border-transparent hover:border-blue-500 hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 active:scale-[0.98]">
                   {category.image && (
                     <div className="aspect-video w-full overflow-hidden rounded-t-lg bg-gradient-to-br from-gray-100 to-gray-200">
                       <img
@@ -256,7 +271,7 @@ export default function HomeClient({ categories, featuredProducts }: HomeClientP
               {featuredProducts.map((product) => (
                 <Card
                   key={product._id}
-                  className="group hover:shadow-2xl transition-all duration-300 border-2 border-transparent hover:border-blue-400 transform hover:-translate-y-1 overflow-hidden"
+                  className="group hover:shadow-2xl transition-all duration-300 border-2 border-transparent hover:border-blue-400 transform hover:-translate-y-1 active:scale-[0.98] overflow-hidden"
                 >
                   <Link href={`/products/${product.slug}`} className="block relative">
                     {product.images[0] && (

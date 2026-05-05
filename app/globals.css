@@ -117,4 +117,54 @@
   .animation-delay-4000 {
     animation-delay: 4s;
   }
+
+  /* Entrance: slide up + fade in. Triggers on mount, not on hover, so it works on mobile. */
+  @keyframes fadeUp {
+    0% {
+      opacity: 0;
+      transform: translateY(16px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-fade-up {
+    animation: fadeUp 0.6s ease-out both;
+  }
+
+  /* Subtle bounce for CTAs that should draw attention without being annoying */
+  @keyframes attentionPulse {
+    0%, 100% {
+      box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.5);
+    }
+    50% {
+      box-shadow: 0 0 0 14px rgba(34, 197, 94, 0);
+    }
+  }
+
+  .animate-attention-pulse {
+    animation: attentionPulse 2s ease-in-out infinite;
+  }
+
+  /* Hide scrollbar (for horizontal feature strips on mobile) */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Respect users who prefer reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .animate-blob,
+    .animate-float,
+    .animate-gradient,
+    .animate-fade-up,
+    .animate-attention-pulse {
+      animation: none !important;
+    }
+  }
 }

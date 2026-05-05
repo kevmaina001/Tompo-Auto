@@ -243,11 +243,11 @@ export default function ContactClient() {
             <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4 sm:mb-6">
               Find Us
             </h2>
-            <div className="rounded-2xl overflow-hidden shadow-lg">
+            <div className="rounded-2xl overflow-hidden shadow-lg h-[300px] sm:h-[400px] lg:h-[450px]">
               <iframe
                 src="https://www.google.com/maps?q=Kiriye+House+Kirinyaga+Road+Nairobi&output=embed"
                 width="100%"
-                height="450"
+                height="100%"
                 style={{ border: 0 }}
                 allowFullScreen
                 loading="lazy"

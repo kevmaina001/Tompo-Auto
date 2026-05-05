@@ -102,59 +102,63 @@ export default function CartClient() {
 
       <h1 className="text-3xl font-bold mb-8">Enquiry Cart</h1>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <div className="lg:col-span-2 space-y-4">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
+        <div className="lg:col-span-2 space-y-3 sm:space-y-4">
           {items.map((item) => (
-            <Card key={item.productId}>
-              <CardContent className="p-4">
-                <div className="flex items-center gap-4">
-                  {item.image && (
-                    <img
-                      src={item.image}
-                      alt={item.title}
-                      className="w-20 h-20 object-cover rounded"
-                    />
-                  )}
-
-                  <div className="flex-1">
-                    <h3 className="font-semibold">{item.title}</h3>
-                    <p className="text-sm text-gray-600">
-                      KES {item.price.toLocaleString()} each
-                    </p>
+            <Card key={item.productId} className="overflow-hidden">
+              <CardContent className="p-3 sm:p-4">
+                <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
+                  <div className="flex items-start gap-3 flex-1 min-w-0">
+                    {item.image && (
+                      <img
+                        src={item.image}
+                        alt={item.title}
+                        className="w-16 h-16 sm:w-20 sm:h-20 object-cover rounded flex-shrink-0"
+                      />
+                    )}
+                    <div className="flex-1 min-w-0">
+                      <h3 className="font-semibold text-sm sm:text-base line-clamp-2 leading-snug">
+                        {item.title}
+                      </h3>
+                      <p className="text-xs sm:text-sm text-gray-600 mt-1">
+                        KES {item.price.toLocaleString()} each
+                      </p>
+                    </div>
                   </div>
 
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center justify-between gap-2 sm:gap-3 sm:flex-shrink-0 border-t sm:border-t-0 pt-3 sm:pt-0">
                     <div className="flex items-center border rounded-lg">
                       <Button
                         variant="ghost"
                         size="sm"
                         onClick={() => updateQuantity(item.productId, item.quantity - 1)}
+                        className="h-9 w-9 p-0 active:scale-90 transition-transform"
                       >
                         <Minus className="h-4 w-4" />
                       </Button>
-                      <span className="px-3 py-1 font-semibold min-w-[3ch] text-center">
+                      <span className="px-3 py-1 font-semibold min-w-[2.5ch] text-center text-sm">
                         {item.quantity}
                       </span>
                       <Button
                         variant="ghost"
                         size="sm"
                         onClick={() => updateQuantity(item.productId, item.quantity + 1)}
+                        className="h-9 w-9 p-0 active:scale-90 transition-transform"
                       >
                         <Plus className="h-4 w-4" />
                       </Button>
                     </div>
 
-                    <div className="min-w-[100px] text-right">
-                      <p className="font-bold">
-                        KES {(item.price * item.quantity).toLocaleString()}
-                      </p>
-                    </div>
+                    <p className="font-bold text-sm sm:text-base whitespace-nowrap">
+                      KES {(item.price * item.quantity).toLocaleString()}
+                    </p>
 
                     <Button
                       variant="ghost"
                       size="sm"
                       onClick={() => removeItem(item.productId)}
-                      className="text-red-600 hover:text-red-700"
+                      className="text-red-600 hover:text-red-700 active:scale-90 transition-transform h-9 w-9 p-0"
+                      aria-label="Remove item"
                     >
                       <Trash2 className="h-4 w-4" />
                     </Button>
