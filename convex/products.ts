@@ -1,5 +1,32 @@
 import { v } from "convex/values";
 import { mutation, query } from "./_generated/server";
+import type { Id } from "./_generated/dataModel";
+import type { MutationCtx } from "./_generated/server";
+
+// Builds the denormalized search field. Higher-signal fields are repeated so
+// BM25 ranks them ahead of body text.
+function buildSearchBlob(input: {
+  title: string;
+  brand?: string;
+  oemNumber?: string;
+  compatibleModels?: string[];
+  description?: string;
+  categoryName?: string;
+}): string {
+  const parts: string[] = [];
+  parts.push(input.title, input.title, input.title);
+  if (input.brand) parts.push(input.brand, input.brand);
+  if (input.oemNumber) parts.push(input.oemNumber, input.oemNumber);
+  if (input.categoryName) parts.push(input.categoryName);
+  if (input.compatibleModels?.length) parts.push(input.compatibleModels.join(" "));
+  if (input.description) parts.push(input.description.slice(0, 200));
+  return parts.join(" ");
+}
+
+async function getCategoryName(ctx: MutationCtx, categoryId: Id<"categories">) {
+  const category = await ctx.db.get(categoryId);
+  return category?.name;
+}
 
 // Get all products
 export const list = query({
@@ -81,6 +108,9 @@ export const create = mutation({
     featured: v.optional(v.boolean()),
   },
   handler: async (ctx, args) => {
+    const categoryName = await getCategoryName(ctx, args.categoryId);
+    const searchBlob = buildSearchBlob({ ...args, categoryName });
+
     const productId = await ctx.db.insert("products", {
       title: args.title,
       slug: args.slug,
@@ -94,6 +124,7 @@ export const create = mutation({
       compatibleModels: args.compatibleModels,
       featured: args.featured ?? false,
       views: 0,
+      searchBlob,
       createdAt: Date.now(),
       updatedAt: Date.now(),
     });
@@ -119,14 +150,27 @@ export const update = mutation({
   },
   handler: async (ctx, args) => {
     const { id, ...updates } = args;
+    const existing = await ctx.db.get(id);
+    if (!existing) throw new Error("Product not found");
 
-    // Filter out undefined values
     const filteredUpdates = Object.fromEntries(
       Object.entries(updates).filter(([_, value]) => value !== undefined)
-    );
+    ) as Partial<typeof existing>;
+
+    const merged = { ...existing, ...filteredUpdates };
+    const categoryName = await getCategoryName(ctx, merged.categoryId);
+    const searchBlob = buildSearchBlob({
+      title: merged.title,
+      brand: merged.brand,
+      oemNumber: merged.oemNumber,
+      compatibleModels: merged.compatibleModels,
+      description: merged.description,
+      categoryName,
+    });
 
     await ctx.db.patch(id, {
       ...filteredUpdates,
+      searchBlob,
       updatedAt: Date.now(),
     });
     return id;
@@ -142,7 +186,8 @@ export const remove = mutation({
   },
 });
 
-// Search products with advanced filtering
+// Search products via Convex full-text search index.
+// Supports: prefix matching, single-character typo tolerance, BM25 ranking.
 export const search = query({
   args: {
     searchTerm: v.string(),
@@ -153,56 +198,57 @@ export const search = query({
     limit: v.optional(v.number()),
   },
   handler: async (ctx, args) => {
-    const allProducts = await ctx.db.query("products").collect();
-    const searchLower = args.searchTerm.toLowerCase().trim();
+    const term = args.searchTerm.trim();
+    if (!term) return [];
+
     const limit = args.limit ?? 20;
+    // Pull more than `limit` so post-filter (price/stock) still has results to return.
+    const fetchSize = Math.min(limit * 4, 200);
 
-    // If search term is empty, return empty array
-    if (!searchLower) return [];
+    const results = await ctx.db
+      .query("products")
+      .withSearchIndex("by_search", (q) => {
+        const search = q.search("searchBlob", term);
+        return args.categoryId ? search.eq("categoryId", args.categoryId) : search;
+      })
+      .take(fetchSize);
 
-    let results = allProducts.filter((product) => {
-      // Text search across multiple fields
-      const matchesSearch =
-        product.title.toLowerCase().includes(searchLower) ||
-        product.description?.toLowerCase().includes(searchLower) ||
-        product.brand?.toLowerCase().includes(searchLower) ||
-        product.oemNumber?.toLowerCase().includes(searchLower) ||
-        product.compatibleModels?.some(model =>
-          model.toLowerCase().includes(searchLower)
-        );
-
-      if (!matchesSearch) return false;
-
-      // Category filter
-      if (args.categoryId && product.categoryId !== args.categoryId) {
-        return false;
-      }
-
-      // Price filters
-      if (args.minPrice !== undefined && product.price < args.minPrice) {
-        return false;
-      }
-      if (args.maxPrice !== undefined && product.price > args.maxPrice) {
-        return false;
-      }
-
-      // Stock filter
-      if (args.inStockOnly && product.stock <= 0) {
-        return false;
-      }
-
+    const filtered = results.filter((product) => {
+      if (args.minPrice !== undefined && product.price < args.minPrice) return false;
+      if (args.maxPrice !== undefined && product.price > args.maxPrice) return false;
+      if (args.inStockOnly && product.stock <= 0) return false;
       return true;
     });
 
-    // Sort by relevance (title matches first, then by views)
-    results.sort((a, b) => {
-      const aTitle = a.title.toLowerCase().includes(searchLower) ? 1 : 0;
-      const bTitle = b.title.toLowerCase().includes(searchLower) ? 1 : 0;
-      if (bTitle !== aTitle) return bTitle - aTitle;
-      return b.views - a.views;
-    });
+    return filtered.slice(0, limit);
+  },
+});
 
-    return results.slice(0, limit);
+// One-time backfill: populate searchBlob for products that don't have it yet.
+// Run from Convex dashboard → Functions → products:backfillSearchBlob → Run.
+// Idempotent — safe to run multiple times. Recomputes blobs every time so it
+// also serves as a manual reindex if buildSearchBlob logic changes.
+export const backfillSearchBlob = mutation({
+  args: {},
+  handler: async (ctx) => {
+    const all = await ctx.db.query("products").collect();
+    let updated = 0;
+    for (const product of all) {
+      const categoryName = await getCategoryName(ctx, product.categoryId);
+      const searchBlob = buildSearchBlob({
+        title: product.title,
+        brand: product.brand,
+        oemNumber: product.oemNumber,
+        compatibleModels: product.compatibleModels,
+        description: product.description,
+        categoryName,
+      });
+      if (searchBlob !== product.searchBlob) {
+        await ctx.db.patch(product._id, { searchBlob });
+        updated++;
+      }
+    }
+    return { total: all.length, updated };
   },
 });
 

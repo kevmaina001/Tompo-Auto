@@ -23,12 +23,17 @@ export default defineSchema({
     compatibleModels: v.optional(v.array(v.string())),
     featured: v.optional(v.boolean()),
     views: v.number(),
+    searchBlob: v.optional(v.string()),
     createdAt: v.number(),
     updatedAt: v.number(),
   })
     .index("by_slug", ["slug"])
     .index("by_category", ["categoryId"])
-    .index("by_featured", ["featured"]),
+    .index("by_featured", ["featured"])
+    .searchIndex("by_search", {
+      searchField: "searchBlob",
+      filterFields: ["categoryId"],
+    }),
 
   enquiries: defineTable({
     items: v.array(

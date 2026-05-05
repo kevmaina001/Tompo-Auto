@@ -58,13 +58,33 @@ export const update = mutation({
   },
   handler: async (ctx, args) => {
     const { id, ...updates } = args;
+    const existing = await ctx.db.get(id);
+    if (!existing) throw new Error("Category not found");
 
-    // Filter out undefined values
     const filteredUpdates = Object.fromEntries(
       Object.entries(updates).filter(([_, value]) => value !== undefined)
     );
 
     await ctx.db.patch(id, filteredUpdates);
+
+    // If the name changed, reindex search blobs for all products in this category.
+    if (args.name && args.name !== existing.name) {
+      const products = await ctx.db
+        .query("products")
+        .withIndex("by_category", (q) => q.eq("categoryId", id))
+        .collect();
+      for (const product of products) {
+        const parts: string[] = [];
+        parts.push(product.title, product.title, product.title);
+        if (product.brand) parts.push(product.brand, product.brand);
+        if (product.oemNumber) parts.push(product.oemNumber, product.oemNumber);
+        parts.push(args.name);
+        if (product.compatibleModels?.length) parts.push(product.compatibleModels.join(" "));
+        if (product.description) parts.push(product.description.slice(0, 200));
+        await ctx.db.patch(product._id, { searchBlob: parts.join(" ") });
+      }
+    }
+
     return id;
   },
 });
