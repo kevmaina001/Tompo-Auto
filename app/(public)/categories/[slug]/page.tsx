@@ -24,13 +24,33 @@ export async function generateMetadata({ params }: { params: { slug: string } })
     };
   }
 
+  const title = `${category.name} - Auto Parts in Kenya`;
+  const description =
+    category.description ||
+    `Buy quality ${category.name.toLowerCase()} auto parts in Nairobi, Kenya. Genuine OEM ${category.name.toLowerCase()} for all vehicle makes at Tompo's Auto Spare Parts. Fast delivery & instant WhatsApp quotes.`;
+
   return {
-    title: `${category.name} - Auto Parts`,
-    description: category.description || `Browse quality ${category.name} auto parts at Tompo's Auto Spare Parts. Genuine parts for all vehicle makes.`,
+    title,
+    description,
+    keywords: [
+      category.name,
+      `${category.name} Kenya`,
+      `${category.name} Nairobi`,
+      `${category.name} parts`,
+      `buy ${category.name.toLowerCase()}`,
+      "auto spare parts Kenya",
+    ],
     openGraph: {
-      title: `${category.name} - Auto Parts`,
-      description: category.description || `Browse quality ${category.name} auto parts`,
-      images: category.image ? [{ url: category.image }] : [],
+      title,
+      description,
+      images: category.image ? [{ url: category.image, width: 1200, height: 630, alt: category.name }] : [],
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: category.image ? [category.image] : [],
     },
     alternates: {
       canonical: `/categories/${category.slug}`,
@@ -47,5 +67,57 @@ export default async function CategoryPage({ params }: { params: { slug: string 
 
   const products = await fetchQuery(api.products.getByCategory, { categoryId: category._id });
 
-  return <CategoryClient category={category} products={products} />;
+  const collectionJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name: `${category.name} - Auto Parts`,
+    description:
+      category.description ||
+      `Browse quality ${category.name} auto parts at Tompo's Auto Spare Parts. Genuine parts for all vehicle makes.`,
+    url: `https://www.tomposauto.com/categories/${category.slug}`,
+    isPartOf: { "@type": "WebSite", name: "Tompo's Auto Spare Parts", url: "https://www.tomposauto.com" },
+    provider: {
+      "@type": "AutoPartsStore",
+      name: "Tompo's Auto Spare Parts",
+      url: "https://www.tomposauto.com",
+    },
+    mainEntity: {
+      "@type": "ItemList",
+      numberOfItems: products.length,
+      itemListElement: products.slice(0, 50).map((p, idx) => ({
+        "@type": "ListItem",
+        position: idx + 1,
+        url: `https://www.tomposauto.com/products/${p.slug}`,
+        name: p.title,
+      })),
+    },
+  };
+
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: "https://www.tomposauto.com" },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: category.name,
+        item: `https://www.tomposauto.com/categories/${category.slug}`,
+      },
+    ],
+  };
+
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
+      <CategoryClient category={category} products={products} />
+    </>
+  );
 }

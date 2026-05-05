@@ -44,34 +44,31 @@ export default function ProductClient({ product, category }: ProductClientProps)
     setQuantity(1);
   };
 
-  const productJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "Product",
-    name: product.title,
-    description: product.description || `${product.title} - Quality auto spare part available at Tompo's Auto`,
-    image: product.images[0] || "",
-    brand: product.brand ? { "@type": "Brand", name: product.brand } : undefined,
-    sku: product.oemNumber || product._id,
-    mpn: product.oemNumber,
-    offers: {
-      "@type": "Offer",
-      url: `https://www.tomposauto.com/products/${product.slug}`,
-      priceCurrency: "KES",
-      price: product.price,
-      availability: product.stock > 0 ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
-      seller: { "@type": "Organization", name: "Tompo's Auto Spare Parts" },
-    },
-    category: category?.name || "Auto Parts",
-  };
-
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(productJsonLd) }}
-      />
-
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <nav aria-label="Breadcrumb" className="mb-6 text-sm">
+          <ol className="flex flex-wrap items-center gap-2 text-gray-600">
+            <li>
+              <Link href="/" className="hover:text-blue-600">Home</Link>
+            </li>
+            {category && (
+              <>
+                <li aria-hidden="true">/</li>
+                <li>
+                  <Link href={`/categories/${category.slug}`} className="hover:text-blue-600">
+                    {category.name}
+                  </Link>
+                </li>
+              </>
+            )}
+            <li aria-hidden="true">/</li>
+            <li className="text-gray-900 font-medium truncate max-w-[200px] sm:max-w-none">
+              {product.title}
+            </li>
+          </ol>
+        </nav>
+
         <Link
           href={category ? `/categories/${category.slug}` : "/"}
           className="inline-flex items-center text-sm text-blue-600 hover:text-blue-800 mb-6"

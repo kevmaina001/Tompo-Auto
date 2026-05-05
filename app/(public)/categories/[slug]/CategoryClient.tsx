@@ -25,31 +25,19 @@ export default function CategoryClient({ category, products }: CategoryClientPro
     });
   };
 
-  const categoryJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "CollectionPage",
-    name: `${category.name} - Auto Parts`,
-    description: category.description || `Browse quality ${category.name} auto parts at Tompo's Auto Spare Parts. Genuine parts for all vehicle makes.`,
-    url: `https://www.tomposauto.com/categories/${category.slug}`,
-    isPartOf: {
-      "@type": "WebSite",
-      name: "Tompo's Auto Spare Parts",
-      url: "https://www.tomposauto.com",
-    },
-    provider: {
-      "@type": "AutoPartsStore",
-      name: "Tompo's Auto Spare Parts",
-      url: "https://www.tomposauto.com",
-    },
-  };
-
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(categoryJsonLd) }}
-      />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 md:py-8">
+        <nav aria-label="Breadcrumb" className="mb-4 sm:mb-6 text-xs sm:text-sm">
+          <ol className="flex flex-wrap items-center gap-2 text-gray-600">
+            <li>
+              <Link href="/" className="hover:text-blue-600">Home</Link>
+            </li>
+            <li aria-hidden="true">/</li>
+            <li className="text-gray-900 font-medium">{category.name}</li>
+          </ol>
+        </nav>
+
         <Link
           href="/"
           className="inline-flex items-center text-xs sm:text-sm text-blue-600 hover:text-blue-800 mb-4 sm:mb-6"
