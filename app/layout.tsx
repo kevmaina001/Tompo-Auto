@@ -143,6 +143,7 @@ export default function RootLayout({
               },
               sameAs: [
                 "https://wa.me/254746198858",
+                "https://maps.app.goo.gl/pjW9rDRaS5RogBRU6",
               ],
             }),
           }}
