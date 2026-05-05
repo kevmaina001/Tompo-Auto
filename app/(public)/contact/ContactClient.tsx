@@ -153,7 +153,7 @@ export default function ContactClient() {
                       <h3 className="font-semibold text-gray-900 mb-1 text-sm sm:text-base">Business Hours</h3>
                       <div className="text-sm sm:text-base text-gray-700">
                         <p>Monday - Friday: 8:00 AM - 6:00 PM</p>
-                        <p>Saturday: 8:00 AM - 4:00 PM</p>
+                        <p>Saturday: 8:00 AM - 6:00 PM</p>
                         <p>Sunday: Closed</p>
                       </div>
                     </div>
