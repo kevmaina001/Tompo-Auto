@@ -141,7 +141,7 @@ export default function ContactClient() {
                     </div>
                     <div>
                       <h3 className="font-semibold text-gray-900 mb-1 text-sm sm:text-base">Location</h3>
-                      <p className="text-sm sm:text-base text-gray-700">Nairobi, Kenya</p>
+                      <p className="text-sm sm:text-base text-gray-700">Kiriye House, Kirinyaga Road, Nairobi, Kenya</p>
                     </div>
                   </div>
 

@@ -113,6 +113,7 @@ export default function RootLayout({
               email: "info@tomposauto.com",
               address: {
                 "@type": "PostalAddress",
+                streetAddress: "Kiriye House, Kirinyaga Road",
                 addressLocality: "Nairobi",
                 addressCountry: "KE",
               },
