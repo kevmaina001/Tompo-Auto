@@ -138,10 +138,16 @@ export default function RootLayout({
               ],
               priceRange: "$$",
               paymentAccepted: ["Cash", "M-Pesa", "Bank Transfer"],
-              areaServed: {
-                "@type": "Country",
-                name: "Kenya",
-              },
+              areaServed: [
+                { "@type": "Country", name: "Kenya" },
+                { "@type": "City", name: "Nairobi" },
+                { "@type": "City", name: "Mombasa" },
+                { "@type": "City", name: "Kisumu" },
+                { "@type": "City", name: "Eldoret" },
+                { "@type": "City", name: "Nakuru" },
+                { "@type": "City", name: "Thika" },
+                { "@type": "City", name: "Machakos" },
+              ],
               sameAs: [
                 "https://wa.me/254746198858",
                 "https://maps.app.goo.gl/pjW9rDRaS5RogBRU6",

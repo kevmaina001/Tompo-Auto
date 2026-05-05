@@ -236,6 +236,40 @@ export default function ContactClient() {
           </div>
         </div>
       </section>
+
+      <section className="pb-12 sm:pb-16 lg:pb-20">
+        <div className="container mx-auto px-4 sm:px-6">
+          <div className="max-w-7xl mx-auto">
+            <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4 sm:mb-6">
+              Find Us
+            </h2>
+            <div className="rounded-2xl overflow-hidden shadow-lg">
+              <iframe
+                src="https://www.google.com/maps?q=Kiriye+House+Kirinyaga+Road+Nairobi&output=embed"
+                width="100%"
+                height="450"
+                style={{ border: 0 }}
+                allowFullScreen
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                title="Tompo's Auto Spare Parts location at Kiriye House, Kirinyaga Road, Nairobi"
+                aria-label="Map showing Tompo's Auto Spare Parts location"
+              />
+            </div>
+            <p className="mt-3 text-sm text-gray-500">
+              <a
+                href="https://maps.app.goo.gl/pjW9rDRaS5RogBRU6"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-600 hover:text-blue-800"
+              >
+                Open in Google Maps
+              </a>{" "}
+              for directions.
+            </p>
+          </div>
+        </div>
+      </section>
     </div>
   );
 }
