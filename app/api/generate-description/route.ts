@@ -35,7 +35,17 @@ export async function POST(req: Request) {
     );
   }
 
-  const prompt = `You are writing a product description for Tompo's Auto Spare Parts shop in Kenya. Write a concise, customer-friendly description for the following auto part. Use 2-3 short paragraphs (around 60-100 words total). Be factual, highlight key benefits, fitment, and quality. Do not invent specifications you don't know. Do not use markdown, headings, bullet points, or emojis. Plain prose only.
+  const prompt = `You are an SEO copywriter for Tompo's Auto Spare Parts, an auto parts shop based in Nairobi, Kenya (Kiriye House, Kirinyaga Road) serving customers across Kenya. Write an SEO-optimised product description for the auto part below.
+
+Requirements:
+- Length: 160-220 words (at least 150 words). Do not write less.
+- Structure: 3 to 4 short paragraphs of plain prose. No markdown, no headings, no bullet points, no emojis, no quotation marks.
+- First paragraph: include the full product title naturally in the first sentence. Describe what the part is and the role it plays in the vehicle.
+- Second paragraph: highlight key benefits, build quality, durability, and what makes it a reliable choice. If a brand or OEM number is provided, weave them in naturally.
+- Third paragraph: cover fitment and compatibility. If compatible models are provided, mention them explicitly. If none are provided, refer generally to compatible vehicles without inventing specific models.
+- Final sentence: a soft local trust signal mentioning Tompo's Auto Spare Parts, Nairobi, or Kenya, and fast delivery / genuine parts. Vary the wording each time so it does not sound templated.
+- SEO: naturally include the product title, brand, category, and (if given) OEM number and compatible model names. Use semantic variations (e.g. "replacement part", "spare part", "auto part") and Kenyan context ("Kenyan roads", "Nairobi", "across Kenya") where it reads naturally. Do not keyword-stuff.
+- Tone: factual, confident, customer-friendly. Never invent specific specs, sizes, materials, warranties, or model years that are not provided.
 
 Product details:
 - Title: ${title}
@@ -44,11 +54,11 @@ ${category ? `- Category: ${category}` : ""}
 ${oemNumber ? `- OEM Number: ${oemNumber}` : ""}
 ${compatibleModels ? `- Compatible Models: ${compatibleModels}` : ""}
 
-Write only the description text. No preamble, no labels, no quotation marks.`;
+Output only the description text. No preamble, no labels, no quotation marks, no closing remarks.`;
 
   try {
     const res = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${apiKey}`,
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`,
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -56,7 +66,10 @@ Write only the description text. No preamble, no labels, no quotation marks.`;
           contents: [{ parts: [{ text: prompt }] }],
           generationConfig: {
             temperature: 0.7,
-            maxOutputTokens: 400,
+            maxOutputTokens: 1024,
+            thinkingConfig: {
+              thinkingBudget: 0,
+            },
           },
         }),
       }
@@ -72,14 +85,20 @@ Write only the description text. No preamble, no labels, no quotation marks.`;
     }
 
     const data = await res.json();
-    const text: string | undefined =
-      data?.candidates?.[0]?.content?.parts?.[0]?.text;
+    const candidate = data?.candidates?.[0];
+    const text: string | undefined = candidate?.content?.parts?.[0]?.text;
+    const finishReason: string | undefined = candidate?.finishReason;
 
     if (!text) {
+      console.error("Gemini returned no text. finishReason:", finishReason, "raw:", JSON.stringify(data).slice(0, 500));
       return NextResponse.json(
         { error: "AI returned no content. Please try again." },
         { status: 502 }
       );
+    }
+
+    if (finishReason && finishReason !== "STOP") {
+      console.warn("Gemini finishReason:", finishReason, "— output may be truncated");
     }
 
     return NextResponse.json({ description: text.trim() });
