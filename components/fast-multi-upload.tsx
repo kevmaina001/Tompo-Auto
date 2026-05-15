@@ -63,6 +63,22 @@ const resizeImage = (file: File): Promise<Blob> => {
   });
 };
 
+// Load @imgly/background-removal from a CDN at runtime so webpack never bundles it.
+// Bundling this package fails because its onnxruntime dependency uses import.meta
+// in a way that Next.js's SWC parser rejects. CDN ESM bypass works in all modern browsers.
+type ImglyModule = { removeBackground: (input: string | Blob | File) => Promise<Blob> };
+let imglyModulePromise: Promise<ImglyModule> | null = null;
+const loadBackgroundRemoval = (): Promise<ImglyModule> => {
+  if (!imglyModulePromise) {
+    imglyModulePromise = import(
+      /* webpackIgnore: true */
+      // @ts-expect-error - dynamic CDN ESM import has no static types
+      "https://cdn.jsdelivr.net/npm/@imgly/background-removal@1.7.0/+esm"
+    ) as Promise<ImglyModule>;
+  }
+  return imglyModulePromise;
+};
+
 type BgStyle = "white" | "dark" | "transparent";
 
 const BG_COLORS: Record<Exclude<BgStyle, "transparent">, string> = {
@@ -140,7 +156,7 @@ export function FastMultiUpload({
     setBgError(null);
     setProcessingIdx(idx);
     try {
-      const { removeBackground } = await import("@imgly/background-removal");
+      const { removeBackground } = await loadBackgroundRemoval();
       const sourceUrl = currentImages[idx];
       const cutoutBlob = await removeBackground(sourceUrl);
       const { blob: finalBlob, ext } = await compositeBackground(cutoutBlob, style);
@@ -161,7 +177,7 @@ export function FastMultiUpload({
     setBgError(null);
     setBatchProcessing(true);
     try {
-      const { removeBackground } = await import("@imgly/background-removal");
+      const { removeBackground } = await loadBackgroundRemoval();
       const next = [...currentImages];
       for (let i = 0; i < next.length; i++) {
         setProcessingIdx(i);
