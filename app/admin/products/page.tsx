@@ -31,7 +31,7 @@ import {
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { FastMultiUpload } from "@/components/fast-multi-upload";
-import { Plus, Edit, Trash2 } from "lucide-react";
+import { Plus, Edit, Trash2, Sparkles, Loader2 } from "lucide-react";
 import type { Id } from "@/convex/_generated/dataModel";
 
 interface FormData {
@@ -57,9 +57,45 @@ interface ProductFormProps {
 }
 
 const ProductForm = memo(function ProductForm({ onSubmit, submitLabel, formData, setFormData, categories }: ProductFormProps) {
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [generateError, setGenerateError] = useState<string | null>(null);
+
   const handleFieldChange = useCallback((field: keyof FormData, value: string | string[] | boolean) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   }, [setFormData]);
+
+  const handleGenerateDescription = useCallback(async () => {
+    if (!formData.title.trim()) {
+      setGenerateError("Please enter a product title first");
+      return;
+    }
+    setGenerateError(null);
+    setIsGenerating(true);
+    try {
+      const categoryName = categories.find((c) => c._id === formData.categoryId)?.name;
+      const res = await fetch("/api/generate-description", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          title: formData.title,
+          brand: formData.brand,
+          category: categoryName,
+          oemNumber: formData.oemNumber,
+          compatibleModels: formData.compatibleModels,
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setGenerateError(data.error || "Failed to generate description");
+        return;
+      }
+      setFormData((prev) => ({ ...prev, description: data.description }));
+    } catch {
+      setGenerateError("Network error. Please try again.");
+    } finally {
+      setIsGenerating(false);
+    }
+  }, [formData.title, formData.brand, formData.categoryId, formData.oemNumber, formData.compatibleModels, categories, setFormData]);
 
   return (
     <form onSubmit={onSubmit} className="space-y-4 max-h-[70vh] overflow-y-auto px-1">
@@ -124,13 +160,37 @@ const ProductForm = memo(function ProductForm({ onSubmit, submitLabel, formData,
         </div>
 
         <div className="sm:col-span-2">
-          <Label htmlFor="description">Description</Label>
+          <div className="flex items-center justify-between mb-1">
+            <Label htmlFor="description">Description</Label>
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={handleGenerateDescription}
+              disabled={isGenerating || !formData.title.trim()}
+              className="h-8"
+            >
+              {isGenerating ? (
+                <>
+                  <Loader2 className="mr-1 h-3 w-3 animate-spin" /> Generating...
+                </>
+              ) : (
+                <>
+                  <Sparkles className="mr-1 h-3 w-3" /> Generate with AI
+                </>
+              )}
+            </Button>
+          </div>
           <Textarea
             id="description"
             value={formData.description}
             onChange={(e) => handleFieldChange('description', e.target.value)}
-            rows={3}
+            rows={5}
+            placeholder="Enter a description, or click 'Generate with AI' to auto-fill"
           />
+          {generateError && (
+            <p className="text-xs text-red-600 mt-1">{generateError}</p>
+          )}
         </div>
 
         <div className="sm:col-span-2">
